@@ -22,7 +22,7 @@ Mit Speicheroption werden Messwerte, Werkstattnotizen, Modelleinstellungen und B
 unter `mission-mausefallenauto-v1` ausschließlich lokal gespeichert. Es gibt keine
 Übermittlung dieser Projektdaten an den Betreiber. Der Widerruf am Seitenende
 löscht im Speichermodus den lokalen Stand; im Sitzungsmodus beendet er die Seite,
-ohne ältere Speicherstände anzufassen. Die Einwilligung und die gewählte Speicheroption werden ausschließlich für die aktuelle Tabsitzung unter `mission-mausefallenauto-consent-v1` im sessionStorage gemerkt. Beim Werkstattwechsel oder Neuladen startet das Projekt damit ohne erneuten Dialog. Widerruf entfernt auch diese Entscheidung; ohne gültige Entscheidung wird erneut gefragt. Wenn der Browser sessionStorage blockiert, erscheint der Dialog wie bisher bei jedem Aufruf. Projektdaten werden dadurch nicht zusätzlich gespeichert.
+ohne ältere Speicherstände anzufassen. Die Einwilligung und die gewählte Speicheroption werden ausschließlich für die aktuelle Tabsitzung unter `mission-mausefallenauto-consent-v1` im sessionStorage gemerkt. Beim Werkstattwechsel oder Neuladen startet das Projekt damit ohne erneuten Dialog. Vor dem Widerruf erscheint ein großer roter Warndialog. Erst die Eingabe der bei jedem Öffnen neu erzeugten sechsstelligen Zahlenkombination aktiviert die Bestätigung; Abbrechen oder Escape erhält Daten und Einwilligung. Widerruf entfernt auch diese Entscheidung; ohne gültige Entscheidung wird erneut gefragt. Wenn der Browser sessionStorage blockiert, erscheint der Dialog wie bisher bei jedem Aufruf. Projektdaten werden dadurch nicht zusätzlich gespeichert.
 Deaktivierte Stationsseiten laden keine Projekt-Skripte und greifen nicht auf
 localStorage zu. Alle vorhandenen Messdaten anderer Stationen bleiben erhalten.
 

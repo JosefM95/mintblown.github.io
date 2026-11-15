@@ -66,11 +66,29 @@
   if(footer){
     const button=document.createElement('button');button.type='button';button.className='button small secondary';button.id='withdraw-project-consent';
     button.textContent=storageAllowed?'Einwilligung widerrufen und Daten löschen':'Einwilligung widerrufen und Sitzung beenden';
+    const dialog=document.createElement('dialog');dialog.id='withdraw-consent-dialog';dialog.className='withdraw-consent-dialog';
+    dialog.setAttribute('aria-labelledby','withdraw-consent-title');dialog.setAttribute('aria-describedby','withdraw-consent-description');
+    dialog.innerHTML='<h2 id="withdraw-consent-title">Achtung: Eure Projektdaten werden gelöscht!</h2><p id="withdraw-consent-description"></p><p>Das lässt sich nicht rückgängig machen. Bereits exportierte Dateien und Screenshots bleiben erhalten.</p><form><label for="withdraw-consent-code">Gebt zur Bestätigung diese sechsstellige Zahlenkombination ein: <strong id="withdraw-consent-challenge"></strong></label><input id="withdraw-consent-code" type="text" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" autocomplete="off" required><div class="actions"><button class="button secondary" type="button" id="withdraw-consent-cancel" autofocus>Abbrechen</button><button class="button" type="submit" id="withdraw-consent-confirm" disabled>Einwilligung widerrufen und Daten löschen</button></div></form>';
+    document.body.append(dialog);
+    const codeInput=dialog.querySelector('input'),confirmButton=dialog.querySelector('[type="submit"]');
+    let challenge='';
+    dialog.querySelector('#withdraw-consent-description').textContent=storageAllowed
+      ?'Wenn ihr jetzt bestätigt, werden alle gespeicherten Projektdaten dieses Projekts in diesem Browser gelöscht und eure Einwilligung zurückgezogen.'
+      :'Wenn ihr jetzt bestätigt, werden alle Projektdaten dieser geöffneten Seite verworfen und eure Einwilligung zurückgezogen. Ältere, bereits gespeicherte Projektstände bleiben erhalten.';
+    dialog.querySelector('#withdraw-consent-cancel').onclick=()=>dialog.close();
+    codeInput.addEventListener('input',()=>{confirmButton.disabled=codeInput.value!==challenge;});
     button.onclick=()=>{
+      challenge=String(100000+Math.floor(Math.random()*900000));
+      dialog.querySelector('#withdraw-consent-challenge').textContent=challenge;
+      codeInput.value='';confirmButton.disabled=true;dialog.showModal();
+    };
+    dialog.querySelector('form').addEventListener('submit',event=>{
+      event.preventDefault();
+      if(codeInput.value!==challenge)return;
       if(window.TrapConsent?.forget?.()===false){alert('Die gemerkte Einwilligung konnte nicht entfernt werden. Schließt diesen Tab, um die Tabsitzung zu beenden.');return;}
       if(storageAllowed)try{localStorage.removeItem(KEY);}catch(_){alert('Die gespeicherten Daten konnten nicht gelöscht werden. Entfernt die Website-Daten bei Bedarf über eure Browsereinstellungen.');}
       location.reload();
-    };
+    });
     footer.append(button);
   }
   status();
