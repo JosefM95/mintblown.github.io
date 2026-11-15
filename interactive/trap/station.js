@@ -4,6 +4,24 @@
   const station=document.body.dataset.station;
   const $=id=>document.getElementById(id);
   const settings=state.controls[station]||(state.controls[station]={});
+  const hypothesis=$('workshop-hypothesis');
+  if(hypothesis){
+    state.hypotheses=state.hypotheses||{};
+    hypothesis.value=state.hypotheses[station]||'';
+    hypothesis.addEventListener('input',()=>{state.hypotheses[station]=hypothesis.value;save();});
+    $('hypothesis-storage').textContent=Trap.storageAllowed
+      ?'Die Vermutung wird mit dem Projekt im Browser gespeichert. Projektdatei und Bau-Doku enthalten sie ebenfalls.'
+      :'Die Vermutung bleibt nur auf dieser geöffneten Seite. Sichert sie vor dem Seitenwechsel mit „Projekt speichern“ oder „Bau-Doku erstellen“.';
+  }
+  state.notes=state.notes||{};
+  const notesSection=document.createElement('section');notesSection.className='panel workshop-notes';
+  notesSection.innerHTML='<h2>Unsere Notizen zur Werkstatt</h2><label for="workshop-notes">Beobachtungen, Bauideen und Verbesserungen für unser Auto</label><textarea id="workshop-notes" rows="8" maxlength="10000" aria-describedby="workshop-notes-hint" placeholder="Was nehmen wir aus dieser Werkstatt für unser Auto mit?"></textarea><p id="workshop-notes-hint" class="hint"></p>';
+  document.querySelector('.lesson-footer').before(notesSection);
+  const notes=document.getElementById('workshop-notes');notes.value=state.notes[station]||'';
+  notes.addEventListener('input',()=>{state.notes[station]=notes.value;save();});
+  document.getElementById('workshop-notes-hint').textContent=Trap.storageAllowed
+    ?'Eure Notizen werden beim Schreiben mit dem Projekt in diesem Browser gespeichert und in die Bau-Doku übernommen. Über „Projekt speichern“ könnt ihr sie zusätzlich als Datei sichern.'
+    :'Eure Notizen bleiben nur auf dieser geöffneten Seite. Sichert sie vor dem Seitenwechsel über „Projekt speichern“ oder „Bau-Doku erstellen“. Für späteres Weiterarbeiten im Browser aktiviert beim Start die Speicheroption.';
   const explored=$('explored');
   if(explored){
     const reminder=document.createElement('p');
@@ -32,7 +50,7 @@
   };
   const wheel=(cx,cy,r,angle=0,color='#3d7160')=>{
     let spokes='';for(let i=0;i<6;i++){const a=angle+i*Math.PI/3;spokes+=`<line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(a)*r*.85}" y2="${cy+Math.sin(a)*r*.85}" stroke="${color}" stroke-width="2"/>`;}
-    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fffef7" stroke="${color}" stroke-width="7"/>${spokes}<circle cx="${cx}" cy="${cy}" r="5" fill="${color}"/><circle cx="${cx+r*Math.sin(angle)}" cy="${cy+r*Math.cos(angle)}" r="5" fill="#dd923e"/>`;
+    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fffef7" stroke="${color}" stroke-width="7"/>${spokes}<circle cx="${cx}" cy="${cy}" r="5" fill="${color}"/><circle cx="${cx-r*Math.sin(angle)}" cy="${cy+r*Math.cos(angle)}" r="5" fill="#dd923e"/>`;
   };
   function bind(callback){
     const controls=[...document.querySelectorAll('.controls input, .controls select')];

@@ -13,7 +13,11 @@
     lever:[{f1:'2',l1:'20',f2:'4',l2:'10'}],ramp:[{s:'1',h:'0,1',force:'1,4',weight:'10'}],
     trials:[{date:'2026-11-03',change:'<script>alert("x")</script>',length:'100',axle:'3',wheel:'6',unwind:'18',total:'23'}]},
     controls:{rechnen:{'calc-length':'100','calc-axle':'3','calc-wheel':'6'},reibung:{grip:'25'},uebersetzung:{'winding-mode':'drum'}},explored:{federkraft:true},profile:{name:'Ada',groupName:'Team <b>Hebel</b>',members:'Ada\nBen'}};
+  data.hypotheses={hebel:'Langer Arm?\n<script>unerwünscht</script>',raeder:''};
   const before=JSON.stringify(data),html=TrapDocument.render(data,new Date('2026-11-03T12:00:00Z'));
+  assert(html.includes('Unsere Vermutungen vor den Aufgaben'),'Report includes hypotheses section');
+  assert(html.includes('Langer Arm?\n&lt;script&gt;unerwünscht&lt;/script&gt;'),'Report preserves hypothesis line breaks and escapes HTML');
+  assert(!html.includes('<script>unerwünscht</script>'),'Hypothesis HTML cannot execute');
   assert(JSON.stringify(data)===before,'Document rendering never mutates state');
   const headings=[...html.matchAll(/<h2>(.*?)<\/h2>/g)].map(match=>match[1]);
   assert(headings[0]==='1 · Name und Gruppe'&&headings[1]==='2 · Unser Bearbeitungsstand','Identity first, progress second');
@@ -35,6 +39,13 @@
   assert(!html.includes('NaN')&&!html.includes('undefined'),'No invalid numeric placeholders');
   assert(html.includes('Ausrollen (m)')&&html.includes('Δ gesamt (m)'),'Derived trial results');
   const empty=TrapDocument.render({tables:{},controls:{},explored:{}});
+  const noteText='Bauidee <script>alert("Notiz")</script>\nZweite Zeile & mehr';
+  const withNotes={...data,notes:{hebel:noteText,raeder:'',reibung:'Lager ausrichten'}};
+  const notesBefore=JSON.stringify(withNotes),noted=TrapDocument.render(withNotes);
+  assert(noted.includes('Bauidee &lt;script&gt;alert(&quot;Notiz&quot;)&lt;/script&gt;\nZweite Zeile &amp; mehr'),'Notes safely escaped with line breaks intact');
+  assert(!noted.includes('<script>alert("Notiz")'),'Note markup cannot execute');
+  assert(noted.includes('Lager ausrichten')&&noted.includes('Unsere Werkstattnotizen'),'Notes from other stations included');
+  assert(JSON.stringify(withNotes)===notesBefore,'Rendering notes leaves project state unchanged');
   assert(!empty.includes('<svg '),'Empty project has no invented diagrams');
   assert(empty.includes('Noch keine vollständigen gültigen Baumaße'),'Empty dimensions explicit');
   const partial={tables:{spring:[{angle:'30',force:'-1'},{angle:'40',force:''}]},controls:{},explored:{}};

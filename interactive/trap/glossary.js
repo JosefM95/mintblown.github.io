@@ -2,6 +2,10 @@
 (function(){
   'use strict';
   const terms={
+    'Bogenweg':'Der Weg auf einer Kreisbahn. Das Ende des Mausefallenarms bewegt sich auf einem solchen Bogen.',
+    'Wickelstelle':'Die Stelle auf Achse oder Wickelscheibe, auf der der Faden aufgewickelt ist.',
+    'Abhebekraft':'Hier: die Kraft senkrecht von der Rampe weg, bei der die Räder gerade den Kontakt verlieren.',
+    'ideales Modell':'Eine vereinfachte Beschreibung. Hier werden zum Beispiel Reibungsverluste und Durchrutschen weggelassen.',
     'tangential':'Entlang einer Tangente: Die Richtung steht senkrecht zum Radius der Kreisbahn. Am Spannarm heißt das: rechtwinklig zum Arm.',
     'Tangentiale':'Tangential heißt: rechtwinklig zum Spannarm und entlang seiner Kreisbahn.',
     'Drehpunkt':'Der Punkt, um den sich ein Hebel oder Arm dreht.',

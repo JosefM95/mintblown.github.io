@@ -3,23 +3,29 @@
   'use strict';
   const result=document.getElementById('result'),frame=document.getElementById('page');
   const key='mission-mausefallenauto-v1',before=localStorage.getItem(key);let count=0,errors=[];
+  const consentKey='mission-mausefallenauto-consent-v1',consentBefore=sessionStorage.getItem(consentKey);
   const assert=(ok,msg)=>{if(!ok)throw new Error(msg);count++;};
   const agree=async(w,persist=true)=>{
+    if(w.TrapBoot.ready)return;
     const ready=new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('Project startup timed out')),10000);w.document.addEventListener('trap:ready',()=>{clearTimeout(timer);resolve();},{once:true});});
-    w.document.getElementById('project-consent-checkbox').checked=true;
-    w.document.getElementById('project-consent-checkbox').dispatchEvent(new w.Event('change'));
-    w.document.getElementById('project-save-later').checked=persist;
-    w.document.getElementById('project-consent-start').click();await ready;
+    if(w.document.getElementById('project-consent').open){
+      w.document.getElementById('project-consent-checkbox').checked=true;
+      w.document.getElementById('project-consent-checkbox').dispatchEvent(new w.Event('change'));
+      w.document.getElementById('project-save-later').checked=persist;
+      w.document.getElementById('project-consent-start').click();
+    }
+    await ready;
   };
-  const load=(file,{consent=true,persist=true}={})=>new Promise((resolve,reject)=>{
+  const load=(file,{consent=true,persist=true,reuseConsent=false}={})=>new Promise((resolve,reject)=>{
+    if(!reuseConsent)sessionStorage.removeItem(consentKey);
     const timeout=setTimeout(()=>reject(new Error('Loading '+file+' timed out')),15000);
     frame.onload=async()=>{
       const w=frame.contentWindow;w.confirm=()=>true;w.addEventListener('error',e=>errors.push(e.message));
       w.storageReads=0;w.storageWrites=0;
       const get=w.Storage.prototype.getItem,set=w.Storage.prototype.setItem;
-      w.Storage.prototype.getItem=function(...args){w.storageReads++;return get.apply(this,args);};
-      w.Storage.prototype.setItem=function(...args){w.storageWrites++;return set.apply(this,args);};
-      try{if(consent&&!w.TrapBoot.blocked)await agree(w,persist);clearTimeout(timeout);resolve(w);}catch(error){clearTimeout(timeout);reject(error);}
+      w.Storage.prototype.getItem=function(...args){if(this===w.localStorage)w.storageReads++;return get.apply(this,args);};
+      w.Storage.prototype.setItem=function(...args){if(this===w.localStorage)w.storageWrites++;return set.apply(this,args);};
+      try{if(!w.TrapBoot.blocked&&(consent||(reuseConsent&&!w.document.getElementById('project-consent').open)))await agree(w,persist);clearTimeout(timeout);resolve(w);}catch(error){clearTimeout(timeout);reject(error);}
     };
     frame.src='../'+file;
   });
@@ -36,6 +42,11 @@
     find(w,'#project-save-later').click();assert(find(w,'#project-consent-start').disabled,'Persistence alone does not grant consent');
     await agree(w,true);
     assert(w.TrapBoot.ready&&!find(w,'#project-consent').open,'Consent starts project');
+    assert(JSON.parse(sessionStorage.getItem(consentKey)).persistent===true,'Consent and storage option remembered for this tab');
+    w=await load('hebel.html',{reuseConsent:true,consent:false});
+    assert(w.TrapBoot.ready&&w.Trap.storageAllowed&&!find(w,'#project-consent').open,'Workshop navigation reuses tab consent and storage choice');
+    w=await load('index.html',{reuseConsent:true,consent:false});
+    assert(w.TrapBoot.ready&&!find(w,'#project-consent').open,'Returning to map needs no new consent');
     assert(find(w,'#project-name')&&find(w,'#project-group')&&find(w,'#project-members'),'Basecamp has all identity fields');
     assert(find(w,'#basecamp-project #project-document')&&find(w,'#basecamp-project #save-project')&&find(w,'#basecamp-project #load-project'),'Project actions directly below identity fields');
     input(w,'#project-name','Ada');input(w,'#project-group','Team <b>Hebel</b>');input(w,'#project-members','Ada\nBen');
@@ -44,7 +55,20 @@
     const sections=[...doc.querySelectorAll('main>section h2')].map(node=>node.textContent);
     assert(sections[0]==='1 · Name und Gruppe'&&sections[1]==='2 · Unser Bearbeitungsstand','Report starts with group and progress');
     assert(doc.querySelector('.project-identity').textContent.includes('Team <b>Hebel</b>')&&!doc.querySelector('.project-identity b'),'Profile safely displayed as text');
-    const imported={...w.Trap.state,profile:{name:'Ben',groupName:'Geladene Gruppe',members:'Ben\nAda'}};
+    const hypothesis='Wenn wir den Arm verlängern …\n<b>Testidee</b>';
+    w=await load('federkraft.html');
+    const intro=find(w,'.station-intro');
+    assert(intro&&find(w,'.station-intro img')&&find(w,'#workshop-hypothesis'),'Lesson starts with sketch and hypothesis input');
+    input(w,'#workshop-hypothesis',hypothesis);
+    assert(JSON.parse(localStorage.getItem(key)).hypotheses.federkraft===hypothesis,'Hypothesis saved automatically');
+    assert(w.TrapBackup.decode(w.TrapBackup.encode(w.Trap.state)).hypotheses.federkraft===hypothesis,'Hypothesis included in project file');
+    w=await load('hebel.html');
+    assert(find(w,'#workshop-hypothesis').value==='','Hypotheses are independent per station');
+    w=await load('federkraft.html');
+    assert(find(w,'#workshop-hypothesis').value===hypothesis,'Hypothesis restored after navigation');
+    assert(w.TrapDocument.render(w.Trap.state).includes('&lt;b&gt;Testidee&lt;/b&gt;'),'PDF document includes escaped hypothesis text');
+    w=await load('index.html');
+    const imported={...w.Trap.state,notes:{federkraft:'Importierte Werkstattnotiz'},profile:{name:'Ben',groupName:'Geladene Gruppe',members:'Ben\nAda'}};
     const transfer=new w.DataTransfer();transfer.items.add(new w.File([w.TrapBackup.encode(imported)],'projekt.json',{type:'application/json'}));
     const importFinished=new Promise((resolve,reject)=>{
       const timer=setTimeout(()=>reject(new Error('Project import timed out')),15000),previous=frame.onload;
@@ -54,9 +78,9 @@
     w=await importFinished;
     assert(find(w,'#project-name').value==='Ben'&&find(w,'#project-group').value==='Geladene Gruppe'&&find(w,'#project-members').value==='Ben\nAda','Loading project restores identity fields');
     assert(w.document.querySelectorAll('[data-destination]').length===8,'All 8 destinations');
-    assert(w.document.querySelectorAll('.station-card[href]').length===3,'Only three active direct links');
-    assert(w.document.querySelectorAll('[data-destination][aria-disabled="true"]').length===5,'Five map stations disabled');
-    assert(w.document.querySelectorAll('.disabled-map-overlay clipPath rect').length===5,'Grayscale overlays cover five inactive regions');
+    assert(w.document.querySelectorAll('.station-card[href]').length===5,'Five active direct links');
+    assert(w.document.querySelectorAll('[data-destination][aria-disabled="true"]').length===3,'Three map stations disabled');
+    assert(w.document.querySelectorAll('.disabled-map-overlay clipPath rect').length===3,'Grayscale overlays cover three inactive regions');
     assert([...w.document.images].every(i=>i.complete&&i.naturalWidth>0),'Map image loaded');
     w.matchMedia=()=>({matches:true});
     w.requestAnimationFrame=callback=>w.setTimeout(()=>callback(w.performance.now()),0);
@@ -65,6 +89,11 @@
     assert(!find(w,'#start-lesson').hidden,'Start button appears on arrival');
     assert(find(w,'#traveller #start-lesson'),'Start button is above traveller');
     assert(w.TrapTravel.current==='goldene-regel','Arrival tracked');
+    for(const page of ['uebersetzung','raeder']){
+      await w.TrapTravel.travel(page);
+      assert(w.TrapTravel.current===page&&find(w,'#start-lesson').getAttribute('href')===page+'.html','New lesson reachable on map: '+page);
+    }
+    await w.TrapTravel.travel('goldene-regel');
     await w.TrapTravel.travel('reibung');
     assert(w.TrapTravel.current==='goldene-regel','Disabled travel rejected');
     await w.TrapTravel.travel('hebel');assert(w.TrapTravel.current==='hebel','Other active stations remain reachable');
@@ -72,6 +101,19 @@
     assert(w.document.querySelectorAll('.island-road').length===16,'All visible roads have motion paths');
     assert(find(w,'#open-station').getAttribute('href').includes('goldene-regel.html'),'Ramp freely reachable');
     w=await load('federkraft.html');
+    assert(find(w,'#workshop-notes').value==='Importierte Werkstattnotiz','Project import restores workshop notes');
+    const workshopNote='Unser Arm <b>bleibt lang</b>.\nFadenführung verbessern.';
+    input(w,'#workshop-notes',workshopNote);
+    assert(JSON.parse(localStorage.getItem(key)).notes.federkraft===workshopNote,'Workshop text saved automatically');
+    assert(w.TrapBackup.decode(w.TrapBackup.encode(w.Trap.state)).notes.federkraft===workshopNote,'Workshop text included in portable project');
+    w=await load('hebel.html');
+    assert(find(w,'#workshop-notes').value==='','Other workshop starts with independent notes');
+    input(w,'#workshop-notes','Armlänge vergleichen');
+    w=await load('federkraft.html');
+    assert(find(w,'#workshop-notes').value===workshopNote,'Multiline workshop text restored on return');
+    const noteReport=new w.DOMParser().parseFromString(w.TrapDocument.render(w.Trap.state),'text/html');
+    assert([...noteReport.querySelectorAll('.workshop-note')].some(n=>n.textContent===workshopNote)&&!noteReport.querySelector('.workshop-note b'),'Build report preserves note text without interpreting HTML');
+    assert(noteReport.body.textContent.includes('Armlänge vergleichen'),'Build report includes notes from other workshops');
     assert(w.Trap.state.profile.groupName==='Geladene Gruppe','Identity persists across lesson navigation');
     assert(w.TrapTables,'Tables script initialized');
     assert(w.TrapGlossary,'Glossary initializes');
@@ -176,7 +218,29 @@
     input(w,'[data-row="0"] [data-field="lift"]','9,95');
     input(w,'[data-row="0"] [data-field="h"]','2');
     assert(text(w,'[data-message]').includes('größer'),'Impossible ramp feedback');
-    for(const page of ['uebersetzung','raeder','reibung','rechnen','testgelaende']){
+    for(const [page,control,result] of [['uebersetzung','winding-radius','transmission-result'],['raeder','wheel-radius','wheel-result']]){
+      w=await load(page+'.html',{consent:false});
+      assert(!w.TrapBoot.blocked&&!w.Trap&&find(w,'#project-consent').open,'New active lesson still gated by consent: '+page);
+      await agree(w,false);
+      assert(w.TrapBoot.ready&&!find(w,'main').hidden,'New active lesson starts: '+page);
+      assert(find(w,'#workshop-notes'),'New active lesson has workshop notes: '+page);
+      assert(find(w,'#workshop-hypothesis')&&find(w,'.station-intro img'),'Active lesson has starting sketch and hypothesis: '+page);
+      assert(find(w,'.station-nav a[href="'+page+'.html"]'),'Lesson navigation link enabled: '+page);
+      const previous=text(w,'#'+result);
+      input(w,'#'+control,'10');
+      assert(text(w,'#'+result)!==previous&&!text(w,'#'+result).includes('NaN'),'New active model responds to input: '+page);
+    }
+    input(w,'#wheel-turns','1');
+    let startCenter;
+    for(const [progress,dx,dy] of [[0,0,1],[25,-1,0],[50,0,-1],[75,1,0],[100,0,1]]){
+      input(w,'#roll-progress',String(progress));
+      const rim=find(w,'#wheel-view circle'),mark=find(w,'#wheel-view circle[fill="#dd923e"]');
+      const cx=Number(rim.getAttribute('cx')),cy=Number(rim.getAttribute('cy')),r=Number(rim.getAttribute('r'));
+      if(progress===0)startCenter=cx;
+      assert(Math.abs((Number(mark.getAttribute('cx'))-cx)/r-dx)<1e-8&&Math.abs((Number(mark.getAttribute('cy'))-cy)/r-dy)<1e-8,'Rim marker rotates clockwise with rightward rolling: '+progress+'%');
+      assert(Math.abs((cx-startCenter)/r-2*Math.PI*progress/100)<1e-8,'Translation matches rotation without slipping: '+progress+'%');
+    }
+    for(const page of ['reibung','rechnen','testgelaende']){
       w=await load(page+'.html');
       assert(w.TrapBoot.blocked&&!w.Trap,'Disabled direct page has no running project: '+page);
       assert(text(w,'main').includes('vorerst deaktiviert'),'Disabled page explains availability');
@@ -187,16 +251,32 @@
     assert(w.storageReads===0&&w.storageWrites===0,'Session-only startup does not read or write storage');
     assert(find(w,'#plate-count').value==='','Session-only mode does not load old data');
     input(w,'#plate-count','2');input(w,'#plate-total-force','0,4');
+    input(w,'#workshop-hypothesis','Vermutung nur in dieser Sitzung');
+    assert(localStorage.getItem(key)===stored,'Session hypothesis does not write localStorage');
+    assert(w.TrapDocument.render(w.Trap.state).includes('Vermutung nur in dieser Sitzung'),'Session hypothesis included in PDF document');
+    input(w,'#workshop-notes','Nur in dieser Sitzung');
+    assert(w.TrapDocument.render(w.Trap.state).includes('Nur in dieser Sitzung'),'Session-only notes immediately included in build report');
     assert(text(w,'#plate-force-result').includes('0,2 N'),'Session-only experiment works');
     assert(w.storageReads===0&&w.storageWrites===0&&localStorage.getItem(key)===stored,'Session-only edits preserve old saved data');
+    w=await load('hebel.html',{reuseConsent:true,consent:false});
+    assert(w.TrapBoot.ready&&!w.Trap.storageAllowed&&!find(w,'#project-consent').open,'Session-only consent survives reload without enabling persistence');
+    assert(find(w,'#workshop-notes').value===''&&localStorage.getItem(key)===stored,'Remembering consent does not persist session-only project data');
+    const sessionReloaded=new Promise(resolve=>{frame.onload=resolve;});
+    find(w,'#withdraw-project-consent').click();await sessionReloaded;w=frame.contentWindow;
+    assert(!w.Trap&&find(w,'#project-consent').open&&sessionStorage.getItem(consentKey)===null,'Session-only withdrawal forgets consent and asks again');
+    assert(localStorage.getItem(key)===stored,'Session-only withdrawal preserves older project data');
     w=await load('index.html');assert(find(w,'[data-destination="federkraft"]').classList.contains('visited'),'Map self-progress');
-    assert(text(w,'#map-progress').includes('1 / 3'),'Progress counts only active stations');
+    assert(text(w,'#map-progress').includes('1 / 5'),'Progress counts only active stations');
     const reloaded=new Promise(resolve=>{frame.onload=resolve;});
     find(w,'#withdraw-project-consent').click();await reloaded;w=frame.contentWindow;
     assert(!w.Trap&&find(w,'#project-consent').open,'Withdrawal returns to consent gate');
     assert(localStorage.getItem(key)===null,'Withdrawal deletes persistent project data');
+    assert(sessionStorage.getItem(consentKey)===null,'Persistent-mode withdrawal also forgets tab consent');
+    sessionStorage.setItem(consentKey,'{"version":1,"accepted":true,"persistent":"false"}');
+    w=await load('index.html',{reuseConsent:true,consent:false});
+    assert(!w.Trap&&find(w,'#project-consent').open,'Invalid remembered storage choice never grants consent');
     assert(errors.length===0,'No runtime errors: '+errors.join(', '));
-    result.textContent='PASS: '+count+' browser checks. Three active stations, disabled routes, consent, session-only mode, real tables, force diagrams, storage and withdrawal.';
+    result.textContent='PASS: '+count+' browser checks. Five active stations, disabled routes, consent, session-only mode, real tables, force diagrams, storage and withdrawal.';
   } catch(error){result.textContent='FAIL: '+error.stack;}
-  finally{if(before===null)localStorage.removeItem(key);else localStorage.setItem(key,before);}
+  finally{if(before===null)localStorage.removeItem(key);else localStorage.setItem(key,before);if(consentBefore===null)sessionStorage.removeItem(consentKey);else sessionStorage.setItem(consentKey,consentBefore);}
 })();

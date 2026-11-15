@@ -6,6 +6,11 @@
   const assert=(v,msg)=>{if(!v)throw new Error(msg);count++;};
   const rejects=(value,msg)=>{let rejected=false;try{B.decode(typeof value==='string'?value:JSON.stringify(value));}catch(_){rejected=true;}assert(rejected,msg);};
   const state={tables:{spring:[{angle:'90',force:'2,5'},{angle:'',force:''}],trials:[{date:'2026-11-03',change:'<Text> bleibt Text',length:'100',axle:'3',wheel:'6',unwind:'18',total:'23'}]},controls:{federkraft:{'arm-angle':'65'},rechnen:{'calc-length':'100','calc-axle':'3','calc-wheel':'6'}},explored:{federkraft:true,hebel:false}};
+  const hypothesisState={...state,hypotheses:{hebel:'Wenn wir den Arm verlängern …\n<Text bleibt Text>',raeder:''}};
+  assert(JSON.stringify(B.decode(B.encode(hypothesisState)).hypotheses)===JSON.stringify(hypothesisState.hypotheses),'Hypotheses including line breaks and empty fields survive round trip');
+  rejects({format:'mission-mausefallenauto',version:1,data:{...state,hypotheses:{hebel:42}}},'Reject non-text hypotheses');
+  rejects({format:'mission-mausefallenauto',version:1,data:{...state,hypotheses:{hebel:'x'.repeat(10001)}}},'Reject oversized hypotheses');
+  rejects({format:'mission-mausefallenauto',version:1,data:{...state,hypotheses:{unknown:'Text'}}},'Reject unknown hypothesis station');
   const encoded=B.encode(state),restored=B.decode(encoded);
   assert(JSON.stringify(restored)===JSON.stringify(state),'Full round trip: measurements, settings, progress');
   const withProfile={...state,profile:{name:'Ada',groupName:'Die Hebel',members:'Ada\nBen'}};
@@ -19,6 +24,12 @@
   assert(JSON.stringify(B.decode(B.encode({tables:{},controls:{},explored:{}})))==='{"tables":{},"controls":{},"explored":{}}','Empty project round trip');
   assert(B.decode('\uFEFF'+encoded).tables.spring.length===2,'UTF-8 BOM accepted');
   const file=JSON.parse(encoded);
+  const notes={federkraft:'Messung\nLängerer Arm <testen>',raeder:''};
+  assert(JSON.stringify(B.decode(B.encode({...state,notes})).notes)===JSON.stringify(notes),'Multiline and empty workshop notes survive project export/import');
+  rejects({...file,data:{...state,notes:{unknown:'Text'}}},'Unknown note station rejected');
+  rejects({...file,data:{...state,notes:{hebel:42}}},'Non-text note rejected');
+  rejects({...file,data:{...state,notes:{hebel:'x'.repeat(10001)}}},'Oversized note rejected');
+  assert(B.decode(B.encode({...state,notes:{hebel:'x'.repeat(10000)}})).notes.hebel.length===10000,'Maximum note length accepted');
   rejects('not JSON','Malformed JSON');rejects('date;total\n1;2','CSV rejected');rejects(null,'Null rejected');rejects([],'Array rejected');
   rejects({...file,format:'another-app'},'Foreign project');rejects({...file,version:2},'Future version');
   rejects({...file,data:{tables:{},controls:{}}},'Missing progress');

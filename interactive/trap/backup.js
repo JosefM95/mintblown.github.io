@@ -22,7 +22,7 @@
     return Object.fromEntries(Object.entries(value));
   }
   function validate(data) {
-    requireObject(data,['tables','controls','explored','profile'],'Projekt');
+    requireObject(data,['tables','controls','explored','profile','notes','hypotheses'],'Projekt');
     for (const part of ['tables','controls','explored']) if (!object(data[part])) throw new Error('Messwerte, Einstellungen oder Bearbeitungsstand fehlen.');
     requireObject(data.tables,Object.keys(fields),'Messwerte');
     const tables={};
@@ -48,7 +48,25 @@
         profile[key]=data.profile[key];
       }
     }
-    return {tables,controls:settings,explored:Object.fromEntries(Object.entries(data.explored)),...(profile?{profile}: {})};
+    let notes;
+    if(data.notes!==undefined){
+      requireObject(data.notes,Object.keys(controls),'Werkstattnotizen');
+      notes={};
+      for(const [id,text] of Object.entries(data.notes)){
+        if(typeof text!=='string'||text.length>10000)throw new Error('Werkstattnotizen: ungültiger oder zu langer Eintrag.');
+        notes[id]=text;
+      }
+    }
+    let hypotheses;
+    if(data.hypotheses!==undefined){
+      requireObject(data.hypotheses,['federkraft','hebel','goldene-regel','uebersetzung','raeder'],'Vermutungen');
+      hypotheses={};
+      for(const [id,text] of Object.entries(data.hypotheses)){
+        if(typeof text!=='string'||text.length>10000)throw new Error('Vermutungen: ungültiger oder zu langer Eintrag.');
+        hypotheses[id]=text;
+      }
+    }
+    return {tables,controls:settings,explored:Object.fromEntries(Object.entries(data.explored)),...(profile?{profile}: {}),...(notes?{notes}: {}),...(hypotheses?{hypotheses}: {})};
   }
   function encode(state) {
     return JSON.stringify({format:FORMAT,version:VERSION,savedAt:new Date().toISOString(),data:validate(state)},null,2);
@@ -68,7 +86,7 @@
   if (!storageStatus) return;
   const basecampActions=document.getElementById('basecamp-project-actions');
   const section=document.createElement('section');section.className=basecampActions?'project-files':'card project-files';section.setAttribute('aria-labelledby',basecampActions?'basecamp-project-title':'project-files-title');
-  section.innerHTML='<h2 id="project-files-title">Euer Projekt zum Mitnehmen</h2><p>Speichert eure Namens- und Gruppenangaben, Messwerte, Modelleinstellungen und Bearbeitet-Häkchen gemeinsam in einer Datei. So könnt ihr auf einem anderen Gerät weiterarbeiten. Diagramme entstehen beim Laden neu; Screenshots und CSV-Dateien sind nicht in der Projektdatei enthalten.</p><div class="actions"><button type="button" class="button" id="save-project">Projekt speichern</button><button type="button" class="button secondary" id="load-project">Projekt laden</button></div><input id="project-file" type="file" accept=".json,application/json" hidden><p id="project-file-status" role="status" class="hint" aria-live="polite"></p>';
+  section.innerHTML='<h2 id="project-files-title">Euer Projekt zum Mitnehmen</h2><p>Speichert eure Namens- und Gruppenangaben, Messwerte, Vermutungen, Werkstattnotizen, Modelleinstellungen und Bearbeitet-Häkchen gemeinsam in einer Datei. So könnt ihr auf einem anderen Gerät weiterarbeiten. Diagramme entstehen beim Laden neu; Screenshots und CSV-Dateien sind nicht in der Projektdatei enthalten.</p><div class="actions"><button type="button" class="button" id="save-project">Projekt speichern</button><button type="button" class="button secondary" id="load-project">Projekt laden</button></div><input id="project-file" type="file" accept=".json,application/json" hidden><p id="project-file-status" role="status" class="hint" aria-live="polite"></p>';
   if(basecampActions){
     section.querySelector('h2').remove();basecampActions.append(section);
     const fields=[['project-name','name',150],['project-group','groupName',150],['project-members','members',1000]];

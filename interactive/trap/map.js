@@ -22,7 +22,7 @@
   function segment(step){const path=paths[step.road],length=path.getTotalLength(),duration=matchMedia('(prefers-reduced-motion: reduce)').matches?0:Math.max(500,length*2.5);return new Promise(resolve=>{let begin;function frame(time){begin??=time;const amount=duration?Math.min((time-begin)/duration,1):1;const eased=amount*amount*(3-2*amount);place(path.getPointAtLength((step.reverse?1-eased:eased)*length));if(amount<1)requestAnimationFrame(frame);else resolve();}requestAnimationFrame(frame);});}
   async function travel(target){
     if(moving)return;
-    if(!isActive(target)){status.textContent='Diese Station ist vorerst deaktiviert. Wählt Zugkraft, Hebel oder Goldene Regel.';return;}
+    if(!isActive(target)){status.textContent='Diese Station ist vorerst deaktiviert. Wählt Zugkraft, Hebel, Goldene Regel, Übersetzung oder Räder.';return;}
     const steps=route(current,target);moving=true;start.hidden=true;car.setAttribute('aria-busy','true');nodes.forEach(n=>n.setAttribute('aria-disabled','true'));
     status.textContent=`Unterwegs zu ${target==='basecamp'?'Basecamp':titles[target]} …`;
     overview.href=target==='basecamp'?'#basecamp':`${target}.html`;
