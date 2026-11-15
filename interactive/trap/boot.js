@@ -1,7 +1,7 @@
 /* Gate project startup behind consent, remembered only in the current tab session. */
 (function(){
   'use strict';
-  const active=['federkraft','hebel','goldene-regel','uebersetzung','raeder'];
+  const active=['federkraft','hebel','goldene-regel','uebersetzung','raeder','testgelaende'];
   const isActive=id=>id==='basecamp'||active.includes(id);
   window.TrapAvailability={active,isActive};
   const main=document.querySelector('main.shell'),station=document.body.dataset.station;
@@ -15,7 +15,7 @@
   });
   if(station&&!isActive(station)){
     main.replaceChildren();
-    main.innerHTML='<section class="card unavailable-page"><p class="eyebrow">Mission Mausefallenauto</p><h1>Diese Station ist vorerst deaktiviert.</h1><p>Aktuell könnt ihr Zugkraft, Hebel, Goldene Regel, Übersetzung und Räder bearbeiten.</p><a class="button" href="index.html">Zur Erfinderinsel</a> <a href="../../impressum.html">Impressum</a></section>';
+    main.innerHTML='<section class="card unavailable-page"><p class="eyebrow">Mission Mausefallenauto</p><h1>Diese Station ist vorerst deaktiviert.</h1><p>Aktuell könnt ihr Zugkraft, Hebel, Goldene Regel, Übersetzung, Räder und Testgelände bearbeiten.</p><a class="button" href="index.html">Zur Erfinderinsel</a> <a href="../../impressum.html">Impressum</a></section>';
     main.hidden=false;window.TrapBoot={blocked:true};return;
   }
   const dialog=document.createElement('dialog');dialog.id='project-consent';dialog.className='project-consent';

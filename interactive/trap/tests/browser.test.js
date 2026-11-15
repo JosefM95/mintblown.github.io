@@ -78,9 +78,9 @@
     w=await importFinished;
     assert(find(w,'#project-name').value==='Ben'&&find(w,'#project-group').value==='Geladene Gruppe'&&find(w,'#project-members').value==='Ben\nAda','Loading project restores identity fields');
     assert(w.document.querySelectorAll('[data-destination]').length===8,'All 8 destinations');
-    assert(w.document.querySelectorAll('.station-card[href]').length===5,'Five active direct links');
-    assert(w.document.querySelectorAll('[data-destination][aria-disabled="true"]').length===3,'Three map stations disabled');
-    assert(w.document.querySelectorAll('.disabled-map-overlay clipPath rect').length===3,'Grayscale overlays cover three inactive regions');
+    assert(w.document.querySelectorAll('.station-card[href]').length===6,'Six active direct links');
+    assert(w.document.querySelectorAll('[data-destination][aria-disabled="true"]').length===2,'Two map stations disabled');
+    assert(w.document.querySelectorAll('.disabled-map-overlay clipPath rect').length===2,'Grayscale overlays cover two inactive regions');
     assert([...w.document.images].every(i=>i.complete&&i.naturalWidth>0),'Map image loaded');
     w.matchMedia=()=>({matches:true});
     w.requestAnimationFrame=callback=>w.setTimeout(()=>callback(w.performance.now()),0);
@@ -89,7 +89,7 @@
     assert(!find(w,'#start-lesson').hidden,'Start button appears on arrival');
     assert(find(w,'#traveller #start-lesson'),'Start button is above traveller');
     assert(w.TrapTravel.current==='goldene-regel','Arrival tracked');
-    for(const page of ['uebersetzung','raeder']){
+    for(const page of ['uebersetzung','raeder','testgelaende']){
       await w.TrapTravel.travel(page);
       assert(w.TrapTravel.current===page&&find(w,'#start-lesson').getAttribute('href')===page+'.html','New lesson reachable on map: '+page);
     }
@@ -240,7 +240,10 @@
       assert(Math.abs((Number(mark.getAttribute('cx'))-cx)/r-dx)<1e-8&&Math.abs((Number(mark.getAttribute('cy'))-cy)/r-dy)<1e-8,'Rim marker rotates clockwise with rightward rolling: '+progress+'%');
       assert(Math.abs((cx-startCenter)/r-2*Math.PI*progress/100)<1e-8,'Translation matches rotation without slipping: '+progress+'%');
     }
-    for(const page of ['reibung','rechnen','testgelaende']){
+    w=await load('testgelaende.html');
+    assert(w.TrapBoot.ready&&!w.TrapBoot.blocked,'Test area starts on direct access');
+    assert(find(w,'[data-table="trials"]')&&find(w,'#export-csv'),'Test area exposes trials and CSV export');
+    for(const page of ['reibung','rechnen']){
       w=await load(page+'.html');
       assert(w.TrapBoot.blocked&&!w.Trap,'Disabled direct page has no running project: '+page);
       assert(text(w,'main').includes('vorerst deaktiviert'),'Disabled page explains availability');
@@ -278,7 +281,7 @@
     assert(!w.Trap&&find(w,'#project-consent').open&&sessionStorage.getItem(consentKey)===null,'Session-only withdrawal forgets consent and asks again');
     assert(localStorage.getItem(key)===stored,'Session-only withdrawal preserves older project data');
     w=await load('index.html');assert(find(w,'[data-destination="federkraft"]').classList.contains('visited'),'Map self-progress');
-    assert(text(w,'#map-progress').includes('1 / 5'),'Progress counts only active stations');
+    assert(text(w,'#map-progress').includes('1 / 6'),'Progress counts only active stations');
     const reloaded=new Promise(resolve=>{frame.onload=resolve;});
     find(w,'#withdraw-project-consent').click();
     assert(localStorage.getItem(key)!==null,'Opening warning preserves stored project');
@@ -291,7 +294,7 @@
     w=await load('index.html',{reuseConsent:true,consent:false});
     assert(!w.Trap&&find(w,'#project-consent').open,'Invalid remembered storage choice never grants consent');
     assert(errors.length===0,'No runtime errors: '+errors.join(', '));
-    result.textContent='PASS: '+count+' browser checks. Five active stations, disabled routes, consent, session-only mode, real tables, force diagrams, storage and withdrawal.';
+    result.textContent='PASS: '+count+' browser checks. Six active stations, disabled routes, consent, session-only mode, real tables, force diagrams, storage and withdrawal.';
   } catch(error){result.textContent='FAIL: '+error.stack;}
   finally{if(before===null)localStorage.removeItem(key);else localStorage.setItem(key,before);if(consentBefore===null)sessionStorage.removeItem(consentKey);else sessionStorage.setItem(consentKey,consentBefore);}
 })();
