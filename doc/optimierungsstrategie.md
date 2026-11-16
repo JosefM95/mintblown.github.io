@@ -8,7 +8,7 @@ Die Lernprojekte sollen zuverlässig über GitHub Pages erreichbar sein und sich
 
 ## Bestandsaufnahme
 
-Der betrachtete Stand umfasst rund 309 versionierte Dateien in mehreren Fach- und Jahrgangsbereichen. Die Website besteht aus statischem HTML, CSS, JavaScript und lokalen Assets. Im Repository gibt es weder ein zentrales Paket-/Build-System noch eine `.github`-Workflow-Konfiguration.
+Der analysierte Ausgangsstand umfasste rund 309 versionierte Dateien in mehreren Fach- und Jahrgangsbereichen. Die Website besteht aus statischem HTML, CSS, JavaScript und lokalen Assets. Es gibt weder ein zentrales Paket-/Build-System noch einen Pages-Deployment-Workflow. Eine GitHub-Actions-Prüfung ist inzwischen ergänzt worden.
 
 Ein lokaler statischer Check ergab:
 
@@ -21,9 +21,18 @@ Ein lokaler statischer Check ergab:
 
 Die genannten Bildgrößen sind Dateigrößen im Arbeitsbaum, keine gemessenen Ladezeiten. Es wurden weder Lighthouse-Messungen noch ein vollständiges fachliches oder barrierefreiheitstechnisches Audit durchgeführt. Die GitHub-Pages-Einstellungen konnten nicht eingesehen werden; eine aktive Veröffentlichung ist damit nicht bestätigt.
 
+## Bereits umgesetzt
+
+- `tools/check_site.py` prüft lokale HTML- und CSS-Referenzen einschließlich Groß-/Kleinschreibung, `srcset`, CSS-`url(...)`, Dokumentensprache, Viewport-Metadaten und fehlende `alt`-Attribute. Viewport-Ausnahmen gelten nur für Test-Fixtures.
+- Fünf Python-Regressionstests prüfen unter anderem fehlerhafte HTML-/CSS-Verweise, falsche Pfad-Großschreibung und Testseiten-Ausnahmen.
+- `.github/workflows/validate-site.yml` führt den Site-Check, seine Python-Tests und vier vorhandene Node-Modelltests bei Pushes und Pull Requests aus. Der Workflow ist eine Qualitätsprüfung, kein Pages-Deployment.
+- Zwei sichtbare Lernkarten laden nun WebP mit PNG-Fallback. Die WebP-Dateien sind gegenüber den jeweiligen PNGs ungefähr 79 % (`lernpfad_grafik`) und 78 % (`insel-v2`) kleiner; die Originale bleiben erhalten.
+
 ## Priorisierte Roadmap
 
 ### Priorität 1: GitHub-Pages-Veröffentlichung verifizieren
+
+**Status: ausstehend – erfordert Zugriff auf die GitHub-Repository-Einstellungen.** Der neue CI-Workflow prüft keinen Veröffentlichungsstatus.
 
 In den Repository-Einstellungen einmalig klären, welche Pages-Quelle tatsächlich verwendet wird. Für die statische Website ist **Veröffentlichung aus dem Stammverzeichnis eines ausgewählten Branches** der einfachste Einstieg. Nicht parallel eine zweite Deployment-Methode einrichten, solange nicht bewusst auf eine Actions-Veröffentlichung umgestellt wird.
 
@@ -36,6 +45,8 @@ In den Repository-Einstellungen einmalig klären, welche Pages-Quelle tatsächli
 **Abnahmekriterien:** Die Pages-URL ist bekannt; ein Commit auf die konfigurierte Quelle wird veröffentlicht; die Startseite und die neu hinzugefügte Seite lassen sich online öffnen.
 
 ### Priorität 2: Automatische Qualitätsprüfungen ergänzen
+
+**Status: erste Stufe umgesetzt.** Der Site-Check und fokussierte Modelltests laufen in GitHub Actions. Browser- und weitere Python-Tests bleiben zunächst themenspezifisch.
 
 Eine kleine CI-Prüfung bei Pull Requests sollte zuerst vorhandene, messbare Fehlerklassen abfangen. Der aktuelle Link-Check ist sauber; er eignet sich als Baseline, nicht als Grund für einen großen Umbau.
 
@@ -50,6 +61,8 @@ Eine kleine CI-Prüfung bei Pull Requests sollte zuerst vorhandene, messbare Feh
 
 ### Priorität 3: Testabdeckung nach Lernrisiko ausbauen
 
+**Status: teilweise umgesetzt.** Vier vorhandene Node-Modelltestdateien laufen in CI; weitere Themenbereiche und Browser-Journeys benötigen nach Risiko priorisierte Tests.
+
 Tests sind besonders wichtig, wenn fehlerhafte Ergebnisse falsches Lernen verursachen oder Daten verloren gehen könnten. Daher zuerst Berechnungsmodelle, Antwortauswertung, Zustandswechsel und Speicherung interaktiver Einheiten testen. Für reine Erklärseiten ist nicht automatisch eine eigene Testsuite erforderlich.
 
 **Vorgehen**
@@ -62,6 +75,8 @@ Tests sind besonders wichtig, wenn fehlerhafte Ergebnisse falsches Lernen verurs
 **Abnahmekriterien:** Jede neu eingeführte relevante Berechnung hat fokussierte Tests; dokumentierte Tests sind für andere Entwickler reproduzierbar.
 
 ### Priorität 4: KI-gestützte Erstellung als überprüfbaren Arbeitsablauf nutzen
+
+**Status: Vorlage vorhanden, Praxiserprobung offen.**
 
 Die [Prompt-Vorlage für Lerneinheiten](prompt-vorlage-lerneinheit.md) ist eine vorhandene Grundlage. Sie sollte mit verschieden großen Aufgaben erprobt und anhand tatsächlicher Ergebnisse verbessert werden – nicht nur anhand des Prompts selbst.
 
@@ -76,6 +91,8 @@ Die [Prompt-Vorlage für Lerneinheiten](prompt-vorlage-lerneinheit.md) ist eine 
 
 ### Priorität 5: Große Assets mit Messung optimieren
 
+**Status: zwei aktive Kartenbilder optimiert.** Weitere Assets erst nach Prüfung ihrer Verwendung und visueller Qualität verändern.
+
 Die größten Bilder sollten nach tatsächlicher Verwendung priorisiert werden. Wo Bildinhalt und Lizenz es erlauben, Auflösung und Format (z. B. WebP) optimieren. Diagramme, Beschriftungen und handgezeichnete Details müssen nach Umwandlung visuell geprüft werden. Keine Quelldateien ohne bewusste Entscheidung ersetzen.
 
 Bei Bedarf `width` und `height` an Bild-Elementen setzen und nicht kritische Bilder unterhalb des sichtbaren Bereichs verzögert laden. Vorher und nachher Dateigröße sowie Bildqualität auf Desktop und Smartphone vergleichen.
@@ -83,6 +100,8 @@ Bei Bedarf `width` und `height` an Bild-Elementen setzen und nicht kritische Bil
 **Abnahmekriterien:** Spürbar kleinere übertragene Dateien ohne unleserliche Diagramme, Layoutsprünge oder verlorene Alternativtexte. Performance-Aussagen erst nach Messung treffen.
 
 ### Priorität 6: Wiederverwendbarkeit behutsam erhöhen
+
+**Status: bewusst zurückgestellt.** Erst bei konkretem Änderungsaufwand abstrahieren.
 
 Fachbereiche haben ähnliche Karten- und Seitenmuster, aber eigene Farbwelten und vorhandene Spezialfälle. Deshalb Stylesheets nicht sofort zusammenlegen. Zuerst wiederkehrende, stabile Grundlagen identifizieren – etwa Fokusdarstellung, responsive Abstände oder gemeinsame Navigation – und nur dann schrittweise extrahieren, wenn Änderungen dadurch tatsächlich leichter und sicherer werden.
 
@@ -100,9 +119,9 @@ Fachbereiche haben ähnliche Karten- und Seitenmuster, aber eigene Farbwelten un
 ## Empfohlene Reihenfolge
 
 1. Pages-Quelle und Live-Veröffentlichung verifizieren.
-2. Kleine Pull-Request-Checks für lokale Verweise und ausgewählte Tests ergänzen.
+2. CI-Checks beobachten und Fehlerausgaben bei Bedarf verbessern.
 3. Tests dort ausbauen, wo fachliche Berechnungen oder Lernstände betroffen sind.
 4. Coding-KI-Vorlage an realen Aufgaben erproben und nachjustieren.
-5. Große Assets und wiederkehrende Styles gezielt und messbar optimieren.
+5. Weitere Assets und wiederkehrende Styles nur gezielt und messbar optimieren.
 
 Diese Reihenfolge reduziert zuerst Veröffentlichungs- und Wartungsrisiken und lässt die bewährte statische Struktur unangetastet.

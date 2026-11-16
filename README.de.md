@@ -53,7 +53,7 @@ Die ausführlicheren Anleitungen erläutern Architektur, Erstellung einer Lernei
 - [Lokale Vorschau, Tests und Prüfliste](doc/development.md)
 - [Optimierungsstrategie](doc/optimierungsstrategie.md)
 
-Es gibt keinen einheitlichen Testbefehl für das gesamte Repository. Testwerkzeuge und Voraussetzungen unterscheiden sich je Projekt. Vor Browser-Tests bitte [Entwicklung und Tests](doc/development.md) sowie die README des jeweiligen Themas lesen: Manche Tests verwenden temporäre Profile oder verändern lokalen Browserspeicher.
+Es gibt keinen einheitlichen Testbefehl für alle Lernprojekte. GitHub Actions prüft bei Pushes und Pull Requests interne Verweise, grundlegende HTML-Metadaten und ausgewählte Modelltests. Die Browser-Tests der einzelnen Themen bleiben unterschiedlich; vor ihrer Ausführung bitte [Entwicklung und Tests](doc/development.md) sowie die README des Themas lesen. Manche Tests verwenden temporäre Profile oder verändern lokalen Browserspeicher.
 
 ## Pädagogische und technische Leitlinien
 

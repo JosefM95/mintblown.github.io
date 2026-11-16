@@ -1,0 +1,41 @@
+name: Validate site
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check HTML metadata and local references
+        run: python tools/check_site.py
+
+      - name: Test the site checker
+        run: python -m unittest discover -s tools -p "test_*.py"
+
+      - name: Run focused model tests
+        run: >-
+          node --test
+          ph6/experiment-aufbauen/tests/model.test.js
+          ph6/experiment-aufbauen/tests/pendulum.test.js
+          phef/wegdifferenz/tests/model.test.js
+          phef/wegdifferenz/tests/history.test.js

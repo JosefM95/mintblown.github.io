@@ -18,7 +18,14 @@ Opening a page directly from disk may work for simple lessons, but browser secur
 
 ## Tests
 
-There is no root `package.json`, central test configuration, or single full-suite command. Find tests under the topic being changed and read its README. Existing projects use different approaches, including Node's built-in test runner, browser HTML fixtures, and a project-specific Python runner.
+There is no root `package.json` or single command covering every learning unit. The repository's GitHub Actions workflow (`.github/workflows/validate-site.yml`) runs a dependency-free site checker for local HTML/CSS references and basic HTML metadata, its Python unit tests, and selected Node model tests on pushes and pull requests. Browser fixtures and project-specific Python tests are not all run by CI; find tests under the changed topic and read its README.
+
+The site checker and its regression tests can be run locally with Python 3.10 or newer; they need no third-party packages:
+
+```powershell
+python tools/check_site.py
+python -m unittest discover -s tools -p "test_*.py"
+```
 
 Install Node.js only if you need to run a topic's Node-based tests; they use the built-in test runner and do not require an npm install. Browser fixtures may require a browser such as Chrome, as described by the topic.
 
@@ -27,6 +34,8 @@ Examples documented by their owners:
 ```sh
 node --test ph6/experiment-aufbauen/tests/model.test.js
 node --test ph6/experiment-aufbauen/tests/pendulum.test.js
+node --test phef/wegdifferenz/tests/model.test.js
+node --test phef/wegdifferenz/tests/history.test.js
 ```
 
 The Informatics EF browser runner can be started from the repository root with:
@@ -78,7 +87,7 @@ GitHub Pages is the deployment target. The site is static and its main entry poi
 4. Select the branch that contains the site (commonly `main`) and choose `/(root)` as the folder, then save.
 5. Wait for the Pages deployment to finish. The Pages settings show the published URL and deployment status.
 
-This repository does not include a custom Pages Actions workflow. If the repository is configured to publish through an Actions workflow instead, follow that workflow's process rather than adding a second competing deployment method.
+This repository includes a validation workflow, `.github/workflows/validate-site.yml`, but it does not deploy Pages. If the repository is configured to publish through a separate Actions workflow instead of a source branch, follow that workflow's process rather than adding a competing deployment method. The validation workflow passing does not prove that Pages is enabled or deployed.
 
 ### Publishing a change
 

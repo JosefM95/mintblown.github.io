@@ -53,7 +53,7 @@ The detailed guides explain the architecture, how to create a learning unit, and
 - [Local preview, testing, and review checklist](doc/development.md)
 - [Repository optimization strategy (German)](doc/optimierungsstrategie.md)
 
-There is no single repository-wide test command. Test runners and setup vary by project; see [development and testing](doc/development.md) and the relevant topic README before running browser tests. Some browser tests use temporary profiles or touch local browser data.
+There is no single test command covering every learning unit. GitHub Actions checks local references, basic HTML metadata, and selected model tests on pushes and pull requests. Browser tests still vary by topic; see [development and testing](doc/development.md) and the relevant topic README before running them. Some browser tests use temporary profiles or touch local browser data.
 
 ## Educational and technical principles
 

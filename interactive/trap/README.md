@@ -119,7 +119,7 @@ Beim Laden werden Dateiformat, Version und Datenstruktur geprüft. Fremde, besch
 - `index.html`, `map.js`, `map-model.js`: Lerninsel mit Reisefigur, verbundenem Wegenetz und Direktzugängen. Bei Ankunft erscheint der Startlink direkt über der Figur. Beim Wechsel zwischen Werkstätten reist die Figur über den Rundweg; mit reduzierter Bewegung erfolgt der Wechsel ohne lange Animation.
 - `glossary.js`: kurze Fachbegriff-Erklärungen per Mouseover, Tastaturfokus oder Tippen; Escape schließt die Erklärung. Die Lektionstexte wurden sprachlich vereinfacht, fachliche Begriffe bleiben erhalten.
 - `insel-prompt.txt`: finaler Bildprompt und Erzeugungsverfahren für die neue Insel.
-- `insel-v2.png`: neu generierte Insel mit allen acht Stationen und passenden kurzen Thementiteln. `trap.png` bleibt als ursprüngliche Illustration erhalten. Das SVG-Wegenetz ergänzt die dargestellten Wege mit einem Rundweg außerhalb des Basecamps. Die Figur folgt ausschließlich diesen SVG-Pfaden.
+- `insel-v2.png`: neu generierte Insel mit allen acht Stationen und passenden kurzen Thementiteln. `insel-v2.webp` ist die visuell geprüfte, kleinere WebP-Variante (Qualität 92); die HTML-Seite verwendet sie mit PNG-Fallback. Das SVG-Wegenetz verwendet ebenfalls WebP. `trap.png` bleibt als ursprüngliche Illustration erhalten. Das Wegenetz ergänzt einen Rundweg außerhalb des Basecamps; die Figur folgt ausschließlich diesen SVG-Pfaden.
 - Acht Stations-HTML-Dateien: eigenständige, direkt erreichbare Anleitungen mit gemeinsamem Layout.
 - `style.css`: Layout, Touch-/Tastaturbedienung, Tabletansicht und reduzierte Bewegung.
 - `model.js`: reine Berechnungen und Zahlenparser.

@@ -70,12 +70,15 @@ conventions and preserve unrelated work in the working tree.
    change scoped to this request.
 3. Add a few focused tests for new behavior, following this topic's test
    conventions. Do not assume every *.test.js file is a Node test.
-4. Run the relevant tests available in the environment. If a tool/browser is
-   missing, say so explicitly; do not claim the test passed.
+4. Run `python tools/check_site.py` and
+   `python -m unittest discover -s tools -p "test_*.py"` from the repository
+   root, then run the relevant topic tests available in the environment.
+   If a tool/browser is missing, say so explicitly; do not claim the test passed.
 5. Check changed links and assets, local preview from the repository root,
    keyboard use, and a narrow viewport where practical.
 6. Review the final diff for unrelated edits and update documentation to match
-   the implemented behavior.
+   the implemented behavior. GitHub Actions also runs the site checks and
+   selected Node model tests on pushes and pull requests.
 
 At the end, summarize changed files, the learner-facing result, tests run and
 their outcomes, and any remaining manual subject-matter or GitHub Pages checks.
