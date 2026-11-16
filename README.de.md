@@ -51,6 +51,7 @@ Die ausführlicheren Anleitungen erläutern Architektur, Erstellung einer Lernei
 - [Eine Lerneinheit erstellen](doc/creating-lessons.md)
 - [Prompt-Vorlage für Coding-KIs](doc/prompt-vorlage-lerneinheit.md)
 - [Lokale Vorschau, Tests und Prüfliste](doc/development.md)
+- [Optimierungsstrategie](doc/optimierungsstrategie.md)
 
 Es gibt keinen einheitlichen Testbefehl für das gesamte Repository. Testwerkzeuge und Voraussetzungen unterscheiden sich je Projekt. Vor Browser-Tests bitte [Entwicklung und Tests](doc/development.md) sowie die README des jeweiligen Themas lesen: Manche Tests verwenden temporäre Profile oder verändern lokalen Browserspeicher.
 

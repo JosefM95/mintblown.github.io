@@ -51,6 +51,7 @@ The detailed guides explain the architecture, how to create a learning unit, and
 - [Creating a learning unit](doc/creating-lessons.md)
 - [Coding AI prompt template](doc/prompt-vorlage-lerneinheit.md)
 - [Local preview, testing, and review checklist](doc/development.md)
+- [Repository optimization strategy (German)](doc/optimierungsstrategie.md)
 
 There is no single repository-wide test command. Test runners and setup vary by project; see [development and testing](doc/development.md) and the relevant topic README before running browser tests. Some browser tests use temporary profiles or touch local browser data.
 
