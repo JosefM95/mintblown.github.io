@@ -1,0 +1,63 @@
+:root { color-scheme: light; }
+body { line-height: 1.65; }
+a { color: #126b64; }
+main { max-width: 1040px; padding-bottom: 48px; }
+.hero { background: linear-gradient(135deg, #eef6f3, #fff6e8); }
+.hero-points, .lesson-nav, .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.hero-points { margin-top: 20px; }
+.hero-points span { padding: 6px 12px; border: 1px solid #cbd9d7; border-radius: 999px; background: rgba(255,255,255,.7); }
+.panel { padding: clamp(18px, 3vw, 30px); background: white; border: 1px solid #dce5e5; border-radius: 20px; margin: 22px 0; }
+.panel > :last-child { margin-bottom: 0; }
+.panel h2 { font-size: clamp(1.45rem, 3vw, 2rem); line-height: 1.3; }
+.panel h3 { line-height: 1.35; }
+.outcomes li, .compact-list li, .development-cycle li, .checklist li { margin: 9px 0; }
+.notice, .callout, .design-prompt { padding: 16px 20px; border-left: 4px solid #126b64; border-radius: 8px; background: #eef6f3; }
+.reference-entry { border-top: 5px solid #126b64; }
+.reference-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+.reference-links a { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 16px; border: 1px solid #cbd9d7; border-radius: 12px; background: #fbfdfc; font-weight: 700; text-decoration: none; }
+.reference-links a span { color: #4b5c63; font-size: .92rem; font-weight: 400; }
+.reference-nudge { margin: 14px 0 0; font-size: .94rem; }
+.notice { margin-top: 24px; }
+.warning { border-left-color: #b96c26; background: #fff6e8; }
+.lesson-nav { margin: 24px 0; }
+.lesson-nav a { padding: 9px 12px; border: 1px solid #cbd9d7; border-radius: 12px; text-decoration: none; }
+.lesson-nav a:hover { background: #eef6f3; }
+.bluej-figure, .planning-figure { margin: 20px 0; }
+.bluej-figure img { display: block; width: 100%; height: auto; border: 1px solid #cbd4d8; border-radius: 12px; background: #f3f5f7; }
+figcaption { margin-top: 8px; color: #4b5c63; font-size: .95rem; }
+.planning-figure img { display: block; width: min(100%, 850px); height: auto; margin: 0 auto; border: 1px solid #dce5e5; border-radius: 12px; }
+.code-sample { overflow-x: auto; padding: 18px; border-radius: 12px; background: #1d2b35; color: #f5f7f8; line-height: 1.55; }
+.code-sample code { color: inherit; }
+.question-grid, .phase-grid, .challenge-grid, .support-grid { display: grid; gap: 16px; }
+.question-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 20px 0; }
+.phase-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 20px 0; }
+.challenge-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 18px 0; }
+.support-grid { grid-template-columns: 1fr; margin-top: 20px; }
+.question-card, .phase-card, .challenge-card { min-width: 0; padding: 18px; border: 1px solid #dce5e5; border-radius: 16px; background: #fbfdfc; }
+.question-card h3, .phase-card h3, .challenge-card h3 { margin-top: 0; }
+.hint { margin: 12px 0; padding: 14px 16px; border: 1px solid #e6d3ad; border-radius: 12px; background: #fff9ee; }
+.hint summary { color: #6a4b16; cursor: pointer; font-weight: 700; }
+.hint p:last-child { margin-bottom: 0; }
+.self-check { margin-top: 24px; padding-top: 16px; border-top: 1px solid #dce5e5; }
+.self-check fieldset { display: grid; gap: 10px; margin: 14px 0; padding: 16px; border: 1px solid #b8cbc7; border-radius: 12px; }
+.self-check legend { max-width: 100%; font-weight: 700; }
+.self-check label { display: flex; align-items: flex-start; gap: 10px; font-weight: 400; }
+.self-check input { flex: 0 0 auto; width: auto; margin: .35em 0 0; accent-color: #126b64; }
+button { font: inherit; }
+.status { min-height: 1.7em; margin-bottom: 0; font-weight: 700; }
+.small { color: #4b5c63; font-size: .94rem; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+caption { padding: 8px; text-align: left; font-weight: 700; }
+th, td { min-width: 120px; padding: 10px; border: 1px solid #dce5e5; text-align: left; vertical-align: top; }
+th[scope="row"] { min-width: 185px; }
+.finish { border-top: 5px solid #126b64; }
+footer { padding: 18px; text-align: center; }
+:focus-visible { outline: 3px solid #b96c26; outline-offset: 3px; }
+@media (max-width: 760px) {
+  .question-grid, .phase-grid { grid-template-columns: 1fr; }
+  .challenge-grid { grid-template-columns: 1fr; }
+  .reference-links { grid-template-columns: 1fr; }
+  .lesson-nav { align-items: stretch; flex-direction: column; }
+  .lesson-nav a { text-align: center; }
+}

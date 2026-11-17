@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Verständliche Referenzen zu Java-Syntax und GLOOP 3.7 für das Ballwurfspiel, mit Original-PDFs und kleinem Quiz.">
+  <title>Java- und GLOOP-Referenzen · Ballwurfspiel</title>
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="quiz.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html">✳ Java mit GLOOP</a>
+    <a href="../../index.html">Alle Lernprojekte</a>
+  </header>
+  <main>
+    <a class="back-link" href="../index.html">← Zurück zum Ballwurfspiel</a>
+    <header class="hero">
+      <p class="eyebrow">Nachschlagen · Verstehen · Weiterprogrammieren</p>
+      <h1>Referenzen zu Java und GLOOP</h1>
+      <p>Hier findest du genau die Grundlagen wieder, die im Ballwurfspiel gebraucht werden. Lies nicht alles auswendig: Nutze die passende Erklärung, probiere sie am Startercode aus und gehe dann zur Aufgabe zurück.</p>
+      <div class="hero-points">
+        <span>Java-Syntax ohne Regel-Überladung</span>
+        <span>GLOOP-Begriffe aus deinem Code</span>
+        <span>Original-PDFs zum Nachschlagen</span>
+      </div>
+    </header>
+
+    <nav class="reference-nav" aria-label="Inhalte dieser Referenzseite">
+      <a href="#java">Java-Syntax</a>
+      <a href="#gloop-klassen">GLOOP-Klassen</a>
+      <a href="#im-starter">Am Startercode</a>
+      <a href="#pdfs">PDF-Originale</a>
+      <a href="#quiz">Kurz-Quiz</a>
+    </nav>
+
+    <section class="panel" id="java" aria-labelledby="java-title">
+      <p class="eyebrow">Werkzeugkasten 1</p>
+      <h2 id="java-title">Java-Syntax: erst die Form, dann der Sinn</h2>
+      <p>Java unterscheidet genau zwischen Groß- und Kleinschreibung. <code>GLKugel</code> und <code>glKugel</code> sind verschiedene Namen. Ein Befehl, der etwas tut, endet meistens mit einem Semikolon. Überschriften von Klassen, Methoden und Kontrollstrukturen enden dagegen nicht damit.</p>
+
+      <div class="rule-grid">
+        <article class="reference-card">
+          <h3>1 · Befehl oder Block?</h3>
+          <pre class="code-sample"><code>ball.verschiebe(1, 0, 0);
+
+if (tastatur.links()) {
+    ball.verschiebe(-1, 0, 0);
+}</code></pre>
+          <p>Der Methodenaufruf ist ein einzelner Befehl und hat ein <code>;</code>. Die <code>if</code>-Zeile eröffnet einen Block mit <code>{</code>; die schließende Klammer beendet den Block. An die Bedingung oder an eine schließende Blockklammer kommt hier kein Semikolon.</p>
+        </article>
+        <article class="reference-card">
+          <h3>2 · Klammern gehören zusammen</h3>
+          <p><code>( )</code> umschließen Bedingungen oder Parameter, <code>{ }</code> umschließen Codeblöcke und <code>[ ]</code> werden zum Beispiel bei Arrays verwendet. Prüfe immer, ob jede öffnende Klammer ihren passenden Abschluss hat.</p>
+          <p>Einrückung ist keine Java-Pflicht, macht aber sichtbar, welche Befehle zu einer Bedingung oder Schleife gehören. Der eingerückte Block wird durch die geschweiften Klammern bestimmt.</p>
+        </article>
+        <article class="reference-card">
+          <h3>3 · Name, Typ und Wert</h3>
+          <pre class="code-sample"><code>double schrittweite = 1.0;
+GLKugel ball = new GLKugel(0, 0, 0, 20);</code></pre>
+          <p><code>double</code> und <code>GLKugel</code> sind Typen; <code>schrittweite</code> und <code>ball</code> sind Variablennamen. <code>=</code> weist rechts stehenden Wert beziehungsweise das neu erzeugte Objekt links der Variablen zu. Namen sind innerhalb ihres Gültigkeitsbereichs eindeutig; derselbe Name kann in getrennten Methoden vorkommen.</p>
+        </article>
+        <article class="reference-card">
+          <h3>4 · Werttypen und Objekt-Typen</h3>
+          <p>Für dieses Projekt wichtig sind <code>int</code> für ganze Zahlen, <code>double</code> für Kommazahlen, <code>boolean</code> für <code>true</code> oder <code>false</code> und <code>char</code> für ein einzelnes Zeichen. Das Leerzeichen in <code>' '</code> ist ein solches Zeichen. <code>String</code> und GLOOP-Klassen wie <code>GLKugel</code> sind Objekttypen, keine primitiven Datentypen.</p>
+          <p>Lokale Variablen müssen einen Wert erhalten, bevor sie gelesen werden. Objektfelder bekommen zwar Java-Standardwerte, aber für Einsteiger ist eine klare, bewusste Initialisierung leichter zu verstehen.</p>
+        </article>
+      </div>
+
+      <div class="callout">
+        <h3>Operatoren, die im Ballwurfspiel wirklich helfen</h3>
+        <ul class="operator-list">
+          <li><code>=</code> weist einen Wert zu; <code>==</code> vergleicht zwei Werte auf Gleichheit.</li>
+          <li><code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code> vergleichen Zahlen.</li>
+          <li><code>!</code> bedeutet „nicht“, <code>&amp;&amp;</code> bedeutet „und“, <code>||</code> bedeutet „oder“.</li>
+        </ul>
+        <p>Eine Bedingung muss am Ende <code>true</code> oder <code>false</code> ergeben. Zum Beispiel fragt <code>!tastatur.istGedrueckt(' ')</code>: „Ist die Leertaste gerade nicht gedrückt?“</p>
+      </div>
+
+      <div class="rule-grid">
+        <article class="reference-card">
+          <h3><code>if</code>: nur wenn die Bedingung stimmt</h3>
+          <pre class="code-sample"><code>if (tastatur.links()) {
+    ball.verschiebe(-1, 0, 0);
+}</code></pre>
+          <p>Der Block läuft nur, wenn die Bedingung <code>true</code> ist. Ohne <code>else</code> wird der folgende Code unabhängig davon weiter geprüft. Zwei einzelne <code>if</code>-Anweisungen sind also keine Entweder-oder-Auswahl.</p>
+        </article>
+        <article class="reference-card">
+          <h3><code>while</code>: wiederholen, solange wahr</h3>
+          <pre class="code-sample"><code>while (!tastatur.istGedrueckt(' ')) {
+    // wiederholt ausgeführter Spielschritt
+}</code></pre>
+          <p>Java prüft die Bedingung vor jedem Durchlauf. Ist sie <code>false</code>, wird der Block beendet. Im Starter läuft die Schleife weiter, solange die Leertaste nicht gedrückt ist.</p>
+          <p class="notice"><strong>Schleifen-Check:</strong> Welche Eingabe oder Wertänderung kann die Bedingung irgendwann falsch machen? Ohne erreichbares Ende kann eine Schleife weiterlaufen.</p>
+        </article>
+      </div>
+
+      <details class="hint">
+        <summary>Was ist mit Kommentaren?</summary>
+        <p><code>//</code> kommentiert bis zum Zeilenende. <code>/* ... */</code> umschließt einen Kommentarbereich. Kommentare erklären den Code für Menschen; Java führt sie nicht aus.</p>
+      </details>
+    </section>
+
+    <section class="panel" id="gloop-klassen" aria-labelledby="gloop-title">
+      <p class="eyebrow">Werkzeugkasten 2</p>
+      <h2 id="gloop-title">GLOOP 3.7: die Bausteine im Spiel</h2>
+      <p>GLOOP stellt Klassen bereit, mit denen Java-Programme 3D-Szenen und Eingaben aufbauen. Im Startercode steht <code>import GLOOP.*;</code>, damit diese Klassen verwendet werden können. Für dieses Spiel brauchst du zuerst nur die folgende kleine Auswahl.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>GLOOP-Begriffe aus dem Startercode</caption>
+          <thead><tr><th scope="col">Name im Code</th><th scope="col">Was entsteht oder passiert?</th><th scope="col">Woran erkennst du es?</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>GLKamera</code></th><td>Eine Kamera, durch die du die Szene siehst.</td><td>Der Konstruktor <code>new GLKamera()</code> richtet das Ansichtsfenster ein.</td></tr>
+            <tr><th scope="row"><code>GLLicht</code></th><td>Eine Lichtquelle für die 3D-Szene.</td><td><code>new GLLicht()</code> erzeugt das Licht.</td></tr>
+            <tr><th scope="row"><code>GLHimmel</code></th><td>Einen Himmel, hier mit einer Bilddatei als Textur.</td><td><code>new GLHimmel("Himmel.jpg")</code>; die Datei muss im Projekt verfügbar sein.</td></tr>
+            <tr><th scope="row"><code>GLTastatur</code></th><td>Ein Objekt, das Tastaturzustände abfragt.</td><td><code>links()</code>, <code>rechts()</code>, <code>oben()</code>, <code>unten()</code> und <code>istGedrueckt(' ')</code> liefern <code>boolean</code>.</td></tr>
+            <tr><th scope="row"><code>GLKugel</code></th><td>Eine Kugel mit Mittelpunkt und Radius.</td><td><code>new GLKugel(x, y, z, radius)</code>.</td></tr>
+            <tr><th scope="row"><code>GLQuader</code></th><td>Ein Quader, dessen drei Kantenlängen getrennt festgelegt werden.</td><td><code>new GLQuader(x, y, z, laengeX, laengeY, laengeZ)</code>; mit einer kleinen Y-Länge und großen X-/Z-Längen entsteht eine flache, breite Grundfläche.</td></tr>
+            <tr><th scope="row"><code>GLZylinder</code></th><td>Ein Zylinder mit Radius und Höhe.</td><td><code>new GLZylinder(x, y, z, radius, hoehe)</code>; die ersten drei Werte bestimmen seine Position.</td></tr>
+            <tr><th scope="row"><code>GLObjekt</code></th><td>Oberklasse vieler räumlicher GLOOP-Objekte.</td><td>Eine Kugel kann unter anderem mit <code>verschiebe(x, y, z)</code> bewegt werden.</td></tr>
+            <tr><th scope="row"><code>Sys</code></th><td>GLOOP-Hilfsfunktionen, hier zum Warten.</td><td><code>Sys.warte()</code> wartet ungefähr eine Millisekunde; <code>Sys.warte(zeit)</code> nimmt eine Dauer in Millisekunden.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <h3>Koordinaten lesen, ohne zu raten</h3>
+        <p>GLOOP-Objekte werden mit X-, Y- und Z-Koordinaten positioniert. Bei der Kugel gibt <code>new GLKugel(x, y, z, radius)</code> erst den Mittelpunkt, dann den Radius an. <code>verschiebe(dx, dy, dz)</code> verändert die Position relativ: <code>ball.verschiebe(-1, 0, 0)</code> verschiebt um eins in negative X-Richtung; Y und Z bleiben dabei unverändert.</p>
+        <p>Die Kantenlängen des Quaders sind keine Koordinaten: Erst kommen seine drei Positionswerte, danach die Ausdehnung in X-, Y- und Z-Richtung. Für eine Grundfläche hilft ein gedanklicher Test: Welche Kante soll dünn sein, welche beiden sollen den Spielbereich abdecken?</p>
+        <p>Viele GLOOP-Klassen teilen Methoden ihrer Oberklasse <code>GLObjekt</code>, zum Beispiel <code>gibX()</code>, <code>gibY()</code> und <code>gibZ()</code> für die Mittelpunktkoordinaten, sowie <code>setzePosition(...)</code>, <code>setzeFarbe(...)</code> und <code>loesche()</code>. Die genaue Liste hängt von der jeweiligen Klasse ab.</p>
+      </div>
+      <details class="hint">
+        <summary>Warum steht manchmal ein Punkt zwischen zwei Namen?</summary>
+        <p><code>ball.verschiebe(...)</code> bedeutet: Rufe die Methode am Objekt <code>ball</code> auf. <code>Sys.warte()</code> ist dagegen ein statischer Aufruf der Hilfsklasse <code>Sys</code>; dafür wird kein <code>Sys</code>-Objekt erzeugt.</p>
+      </details>
+      <p class="small">Die PDF-Übersicht beschreibt GLOOP 3.7 und ist ausdrücklich keine vollständige Klassenreferenz. Nutze sie als Nachschlagewerk, nicht als Liste, die du auswendig lernen musst.</p>
+    </section>
+
+    <section class="panel" id="im-starter" aria-labelledby="starter-title">
+      <p class="eyebrow">Wiedererkennen</p>
+      <h2 id="starter-title">So passen Java und GLOOP zusammen</h2>
+      <pre class="code-sample"><code>GLKugel ball;
+ball = new GLKugel(0, 0, 0, 20);
+
+if (tastatur.links()) {
+    ball.verschiebe(-1, 0, 0);
+}
+Sys.warte();</code></pre>
+      <ol class="compact-list">
+        <li><code>GLKugel ball;</code> benennt eine Variable und ihren Typ.</li>
+        <li><code>new GLKugel(...)</code> erzeugt ein Kugelobjekt; die Zuweisung speichert die Referenz darauf in <code>ball</code>.</li>
+        <li><code>tastatur.links()</code> fragt die linke Pfeiltaste ab und liefert wahr oder falsch.</li>
+        <li>Wenn sie gedrückt ist, wird <code>verschiebe</code> auf der Kugel <code>ball</code> ausgeführt.</li>
+        <li><code>Sys.warte()</code> hält kurz an, damit die wiederholten Spielschritte sichtbar und steuerbar bleiben.</li>
+      </ol>
+      <p class="notice"><strong>Wichtig:</strong> Wenn BlueJ <code>GLOOP</code> als unbekannt meldet, fehlen wahrscheinlich Projekt oder Bibliothek aus der schulischen Einrichtung. Entferne den Import nicht, um die Meldung zu verstecken.</p>
+    </section>
+
+    <section class="panel" id="pdfs" aria-labelledby="pdf-title">
+      <p class="eyebrow">Quellen zum Vertiefen</p>
+      <h2 id="pdf-title">Die bereitgestellten Original-PDFs</h2>
+      <p>Die PDFs bleiben unverändert, damit die Quellen erkennbar bleiben. Die Erklärungen oben ordnen die Inhalte des Ballwurfspiels ein und korrigieren missverständliche Kurzregeln.</p>
+      <ul class="pdf-list">
+        <li><a href="material/Grundlagenuebersicht-GLOOP-3.7.pdf">Grundlagenübersicht GLOOP 3.7 öffnen (PDF)</a><span>Die verwendeten Klassen und ausgewählte Methoden nachschlagen. Nicht jede aufgeführte Klasse wird für das Ballwurfspiel gebraucht.</span></li>
+        <li><a href="material/Syntaxregeln-Java-V2-original.pdf">Java-Syntaxregeln – Original öffnen (PDF)</a><span>Das Original kennzeichnet sich selbst als unvollständig. Lies für präzise Regeln zuerst die korrigierte Erklärung auf dieser Seite.</span></li>
+      </ul>
+      <div class="callout warning">
+        <h3>Korrekturhinweise zur Syntax-PDF</h3>
+        <ul>
+          <li>Nicht jede Codezeile endet mit <code>;</code>: Befehle meist schon, aber nicht die Kopfzeilen von <code>if</code>, <code>while</code>, Methoden oder Klassen.</li>
+          <li>Eine <code>if</code>-Anweisung führt ihren Block aus, wenn ihre Bedingung <code>true</code> ist.</li>
+          <li><code>String</code> ist kein primitiver Datentyp. GLOOP-Klassen wie <code>GLKugel</code> sind ebenfalls Referenztypen.</li>
+          <li>Variablennamen müssen in ihrem Gültigkeitsbereich eindeutig sein; Namen dürfen in voneinander getrennten Methoden wiederverwendet werden.</li>
+          <li><code>=</code> weist zu, <code>==</code> vergleicht. Das sind unterschiedliche Operatoren.</li>
+        </ul>
+        <p>Diese Präzisierungen ersetzen die missverständlichen Kurzformulierungen in der PDF, nicht die im Unterricht vereinbarten Regeln.</p>
+      </div>
+    </section>
+
+    <section class="panel quiz-panel" id="quiz" aria-labelledby="quiz-title">
+      <p class="eyebrow">Kurz prüfen · ohne Notendruck</p>
+      <h2 id="quiz-title">Kannst du die Bausteine wiedererkennen?</h2>
+      <p>Wähle pro Frage eine Antwort und lass dir danach die Erklärungen anzeigen. Wenn etwas noch unsicher ist, springe direkt zur passenden Referenz zurück.</p>
+      <form id="reference-quiz">
+        <fieldset data-answer="semicolon">
+          <legend>1. Welche Zeile braucht am Ende ein Semikolon?</legend>
+          <label><input type="radio" name="q1" value="while"> <code>while (tastatur.links())</code></label>
+          <label><input type="radio" name="q1" value="semicolon"> <code>ball.verschiebe(1, 0, 0);</code></label>
+          <label><input type="radio" name="q1" value="block"> Die schließende Klammer <code>}</code> eines <code>if</code>-Blocks</label>
+          <p class="quiz-feedback" role="status"></p>
+        </fieldset>
+        <fieldset data-answer="not-space">
+          <legend>2. Was bedeutet <code>!tastatur.istGedrueckt(' ')</code>?</legend>
+          <label><input type="radio" name="q2" value="space"> Die Leertaste ist gedrückt.</label>
+          <label><input type="radio" name="q2" value="not-space"> Die Leertaste ist nicht gedrückt.</label>
+          <label><input type="radio" name="q2" value="any"> Irgendeine Taste ist gedrückt.</label>
+          <p class="quiz-feedback" role="status"></p>
+        </fieldset>
+        <fieldset data-answer="new-object">
+          <legend>3. Was macht <code>new GLKugel(0, 0, 0, 20)</code>?</legend>
+          <label><input type="radio" name="q3" value="move"> Es verschiebt eine bereits vorhandene Kugel.</label>
+          <label><input type="radio" name="q3" value="new-object"> Es erzeugt ein Kugelobjekt mit Mittelpunkt und Radius.</label>
+          <label><input type="radio" name="q3" value="test"> Es prüft, ob die Kugel getroffen wurde.</label>
+          <p class="quiz-feedback" role="status"></p>
+        </fieldset>
+        <fieldset data-answer="two-ifs">
+          <legend>4. Was gilt für zwei einzelne <code>if</code>-Anweisungen nacheinander?</legend>
+          <label><input type="radio" name="q4" value="two-ifs"> Beide Bedingungen werden geprüft; beide Blöcke können laufen.</label>
+          <label><input type="radio" name="q4" value="else"> Die zweite ist automatisch das <code>else</code> der ersten.</label>
+          <label><input type="radio" name="q4" value="one"> Nur eine Bedingung kann je Schleifenrunde wahr sein.</label>
+          <p class="quiz-feedback" role="status"></p>
+        </fieldset>
+        <fieldset data-answer="relative">
+          <legend>5. Was bewirkt <code>ball.verschiebe(-1, 0, 0)</code>?</legend>
+          <label><input type="radio" name="q5" value="delete"> Es löscht die Kugel.</label>
+          <label><input type="radio" name="q5" value="relative"> Es verschiebt die Kugel um eins in negative X-Richtung.</label>
+          <label><input type="radio" name="q5" value="absolute"> Es setzt die Kugel auf den Mittelpunkt (−1, 0, 0).</label>
+          <p class="quiz-feedback" role="status"></p>
+        </fieldset>
+        <div class="quiz-actions">
+          <button type="submit" class="secondary">Antworten prüfen</button>
+          <button type="reset" class="text-button">Zurücksetzen</button>
+          <p id="quiz-result" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+      <noscript><p class="notice">Die Erklärungen und PDFs oben sind auch ohne JavaScript verfügbar. Für die Quiz-Auswertung muss JavaScript aktiviert sein.</p></noscript>
+    </section>
+  </main>
+  <footer>Java mit GLOOP · Referenzen zum Ballwurfspiel</footer>
+</body>
+</html>

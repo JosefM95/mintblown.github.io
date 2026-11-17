@@ -1,0 +1,105 @@
+
+--- PAGE 1 ---
+ 
+ 
+Informatik MW 
+Syntaxregeln – Java 
+!!!Unvollständig!!! 
+Allgemeine Regeln 
+▪ Jede Codezeile/Befehlszeile wird mit einem Semikolon ( ; ) abgeschlossen. 
+▪ Jede geöffnete Klammer muss auch wieder geschlossen werden ([{}]). 
+▪ Groß- und Kleinschreibung muss beachtet werden. 
+▪ Kommentare beginnen immer mit //, oder der Kommentar wird mit /* und 
+*/ eingeschlossen, z.B. /*  Beispielkommentar */. 
+Variablen und Datentypen 
+Java hat eine Anzahl an, sogenannten primitiven Datentypen: 
+▪ Ganzzahlen: byte, short, int, long  
+▪ Dezimalzahlen: float und double  
+▪ Logische Werte: boolean  
+▪ Symbolische Werte (zur Darstellung von Buchstaben und Ziffern): char 
+Es gibt auch die Möglichkeiten eigene Datentypen zu erstellen z.B. GLKugel. 
+Der Umgang mit Variablen und Datentypen: 
+▪ Variablen müssen erstellt (deklariert) werden. Ihnen wird ein Datentyp 
+zugewiesen. 
+▪ Es dürfen keine 2 Variablen mit gleichem Namen beginnen. 
+▪ Bevor man Variablen benutzt, müssen sie initialisiert werden, d.h. ihnen 
+muss ein Wert, entsprechend dem Datentypen, zugewiesen werden. 
+▪ Datentypen dürfen nicht ohne Weiteres vermischt werden. 
+Operatoren 
+Arithmetik 
+▪ + (Zahlenaddition und String-Verkettung) 
+▪ - (Minus oder Subtraktion) 
+▪ * (Multiplikation) 
+▪ / (Division) 
+▪ % (Modul oder Rest) 
+Vergleich  
+▪ < (kleiner als) 
+▪ <= (kleiner als oder gleich) 
+▪ > (größer als) 
+▪ >= (größer als oder gleich) 
+
+--- PAGE 2 ---
+ 
+ 
+▪ == (gleich) 
+▪ != (NICHT gleich) 
+Logik  
+▪ && (UND) 
+▪ || (ODER) 
+▪ ! (NICHT) 
+▪ ^ (Exklusiv-ODER) 
+ 
+Kontrollstrukturen 
+Kontrollstrukturen bestimmen die Reihenfolge, in der Befehle eines Programms 
+ausgeführt werden. Mit ihnen können Programme auf Bedingungen reagieren 
+oder Anweisungen mehrfach ausführen. 
+Schleifen/Iterationen 
+Eine Schleife wiederholt einen, oder mehrere Befehle so lange, bis eine 
+bestimmte Bedingung nicht mehr erfüllt ist. 
+while-Schleife 
+Die while-Schleife wird ausgeführt, solange die Bedingung in den Klammern den 
+Wert true (wahr) besitzt. 
+Aufbau: 
+while (Bedingung) { 
+    // Anweisungen 
+} 
+Beispiel: 
+int zaehler = 0; 
+while (zaehler < 5) { 
+    System.out.println(zaehler); 
+    zaehler = zaehler + 1; 
+} 
+Selektion/Verzweigung 
+Mit einer Verzweigung kann ein Programm entscheiden, ob bestimmte 
+Anweisungen ausgeführt werden sollen. 
+if-Anweisung 
+Eine if-Anweisung führt ihren Codeblock nur aus, wenn die Bedingung ist. 
+
+--- PAGE 3 ---
+ 
+ 
+Aufbau: 
+if(Bedingung) { 
+    // Anweisungen 
+} 
+Beispiel: 
+if(tastatur.links()) { 
+    ball.verschiebe(-1, 0, 0); 
+} 
+Die Anweisung wird nur ausgeführt, wenn die linke Pfeiltaste gedrückt wird. 
+if-else-Anweisung 
+Soll zwischen zwei Möglichkeiten gewählt werden, verwendet man if und else. 
+Aufbau: 
+if(Bedingung) { 
+    // Anweisungen bei true 
+} 
+else { 
+    // Anweisungen bei false 
+} 
+Merke 
+▪ Schleifen wiederholen Anweisungen.  
+▪ Verzweigungen treffen Entscheidungen.  
+▪ Bedingungen liefern immer die Werte true oder false.  
+▪ In Bedingungen werden häufig Vergleichsoperatoren (, >, ==, !=) und 
+logische Operatoren (&&, ||, !) verwendet. 
+ 
