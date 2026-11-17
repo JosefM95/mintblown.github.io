@@ -44,26 +44,25 @@ use only one start mechanism to avoid launching the game twice.
 - `index.html`: tablet-friendly learning path, BlueJ instructions, prompts,
   differentiated hints, testing ideas, and an exit checklist.
 - `referenzen/index.html`: beginner-friendly Java syntax and GLOOP guide,
-  source PDFs, corrections to ambiguous rules in the syntax handout, and an
-  interactive knowledge quiz.
+  expandable syntax examples, the GLOOP reference PDF, and an interactive
+  knowledge quiz.
 - `referenzen/quiz.js`: checks five answers and explains each response without
   storing results.
 - `styles.css`: responsive layout and additions to the shared site styling.
 - `lesson.js`: feedback for two self-checks; it does not execute student code.
 - `img/`: BlueJ screenshots and the planning image.
-- `referenzen/material/`: copies of the supplied PDFs:
-  `Grundlagenuebersicht-GLOOP-3.7.pdf` and
-  `Syntaxregeln-Java-V2-original.pdf`.
+- `referenzen/material/`: a copy of the supplied
+  `Grundlagenuebersicht-GLOOP-3.7.pdf`.
 
 There is no build step or added dependency. JavaScript is needed for self-check
 feedback; the rest of the learning material remains readable without it.
 Answers and personal data are not stored or transmitted.
 
-The original Java syntax handout is preserved as supplied. It explicitly
-labels itself incomplete and contains wording that can mislead beginners
-(including an overgeneralized semicolon rule and an unfinished `if`
-definition). The reference page provides corrected explanations rather than
-silently altering the source PDF.
+The supplied Java syntax handout explicitly labels itself incomplete and
+contains misleading wording. It is not included or linked in the public
+project. Its useful topics are presented as a complete, corrected explanation
+on `referenzen/index.html`, with expandable examples for syntax, data types,
+operators, control structures, and comments.
 
 ## Protecting model solutions
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Verständliche Referenzen zu Java-Syntax und GLOOP 3.7 für das Ballwurfspiel, mit Original-PDFs und kleinem Quiz.">
+  <meta name="description" content="Vollständige, verständliche Java-Syntaxregeln und GLOOP-Referenz für das Ballwurfspiel, mit Beispielen und Quiz.">
   <title>Java- und GLOOP-Referenzen · Ballwurfspiel</title>
   <link rel="stylesheet" href="../../styles.css">
   <link rel="stylesheet" href="../styles.css">
@@ -24,7 +24,7 @@
       <div class="hero-points">
         <span>Java-Syntax ohne Regel-Überladung</span>
         <span>GLOOP-Begriffe aus deinem Code</span>
-        <span>Original-PDFs zum Nachschlagen</span>
+        <span>Beispiele zum Aufklappen</span>
       </div>
     </header>
 
@@ -32,75 +32,163 @@
       <a href="#java">Java-Syntax</a>
       <a href="#gloop-klassen">GLOOP-Klassen</a>
       <a href="#im-starter">Am Startercode</a>
-      <a href="#pdfs">PDF-Originale</a>
+      <a href="#pdfs">GLOOP-PDF</a>
       <a href="#quiz">Kurz-Quiz</a>
     </nav>
 
     <section class="panel" id="java" aria-labelledby="java-title">
       <p class="eyebrow">Werkzeugkasten 1</p>
-      <h2 id="java-title">Java-Syntax: erst die Form, dann der Sinn</h2>
-      <p>Java unterscheidet genau zwischen Groß- und Kleinschreibung. <code>GLKugel</code> und <code>glKugel</code> sind verschiedene Namen. Ein Befehl, der etwas tut, endet meistens mit einem Semikolon. Überschriften von Klassen, Methoden und Kontrollstrukturen enden dagegen nicht damit.</p>
+      <h2 id="java-title">Java-Syntax · vollständige Grundlagen</h2>
+      <p>Diese Übersicht erklärt die Syntaxregeln, die du zum Lesen und Ändern der Ballwurfspiel-Klasse brauchst. Java ist genau: Groß- und Kleinschreibung zählen; <code>GLKugel</code> und <code>glKugel</code> sind verschiedene Namen. Lies zuerst die kurze Regel und öffne das Beispiel, wenn du mehr sehen möchtest.</p>
 
-      <div class="rule-grid">
-        <article class="reference-card">
-          <h3>1 · Befehl oder Block?</h3>
-          <pre class="code-sample"><code>ball.verschiebe(1, 0, 0);
+      <article class="reference-card">
+        <h3>1 · Befehle, Semikolons und Codeblöcke</h3>
+        <p>Ein einzelner Befehl, etwa eine Zuweisung oder ein Methodenaufruf, endet normalerweise mit <code>;</code>. Bei einer <code>if</code>- oder Schleifenkopfzeile, die einen Codeblock öffnet, steht kein Semikolon. Auch vor dem Codeblock einer normalen Methode steht keines. Ein Codeblock beginnt mit <code>{</code> und endet mit <code>}</code>.</p>
+        <details class="hint">
+          <summary>Beispiel · Wo gehört das Semikolon hin?</summary>
+          <pre class="code-sample"><code>double schrittweite = 1.0;
+ball.verschiebe(schrittweite, 0, 0);
 
 if (tastatur.links()) {
     ball.verschiebe(-1, 0, 0);
 }</code></pre>
-          <p>Der Methodenaufruf ist ein einzelner Befehl und hat ein <code>;</code>. Die <code>if</code>-Zeile eröffnet einen Block mit <code>{</code>; die schließende Klammer beendet den Block. An die Bedingung oder an eine schließende Blockklammer kommt hier kein Semikolon.</p>
-        </article>
-        <article class="reference-card">
-          <h3>2 · Klammern gehören zusammen</h3>
-          <p><code>( )</code> umschließen Bedingungen oder Parameter, <code>{ }</code> umschließen Codeblöcke und <code>[ ]</code> werden zum Beispiel bei Arrays verwendet. Prüfe immer, ob jede öffnende Klammer ihren passenden Abschluss hat.</p>
-          <p>Einrückung ist keine Java-Pflicht, macht aber sichtbar, welche Befehle zu einer Bedingung oder Schleife gehören. Der eingerückte Block wird durch die geschweiften Klammern bestimmt.</p>
-        </article>
-        <article class="reference-card">
-          <h3>3 · Name, Typ und Wert</h3>
+          <p>Die Variablenzuweisung und beide Methodenaufrufe sind Befehle und enden mit <code>;</code>. Hinter der <code>if</code>-Bedingung und der schließenden Klammer steht keines.</p>
+        </details>
+      </article>
+
+      <article class="reference-card">
+        <h3>2 · Klammern und Einrückung</h3>
+        <p>Runde Klammern <code>( )</code> umschließen zum Beispiel Bedingungen und Methodenparameter. Geschweifte Klammern <code>{ }</code> fassen mehrere Befehle zu einem Block zusammen. Eckige Klammern <code>[ ]</code> werden unter anderem für Arrays verwendet. Jede öffnende Klammer braucht den passenden Abschluss.</p>
+        <p>Einrückung ist keine Pflicht für den Java-Compiler, aber eine wichtige Lesehilfe. Sie zeigt, welche Befehle innerhalb eines Blocks stehen; verbindlich sind die geschweiften Klammern.</p>
+        <details class="hint">
+          <summary>Beispiel · Welcher Code gehört zur Schleife?</summary>
+          <pre class="code-sample"><code>while (bedingung) {
+    ersterBefehl();
+    zweiterBefehl();
+}
+dritterBefehl();</code></pre>
+          <p>Nur die ersten beiden Aufrufe stehen zwischen den geschweiften Klammern und gehören zum Schleifenkörper. Der letzte Befehl folgt nach der Schleife.</p>
+        </details>
+      </article>
+
+      <article class="reference-card">
+        <h3>3 · Variablen: deklarieren, initialisieren und verwenden</h3>
+        <p>Eine Variable hat einen Typ und einen Namen. Beim Deklarieren wird sie bekannt gemacht; beim Initialisieren erhält sie ihren ersten Wert. Eine lokale Variable muss initialisiert sein, bevor ihr Wert verwendet wird. Im selben lokalen Gültigkeitsbereich darf derselbe Name nicht noch einmal deklariert werden; in getrennten Methoden können gleiche Namen vorkommen. Für Einsteiger ist es am klarsten, Feld- und lokale Variablennamen nicht zu überdecken.</p>
+        <details class="hint">
+          <summary>Beispiel · Was bedeuten die drei Zeilen?</summary>
+          <pre class="code-sample"><code>double schrittweite;
+schrittweite = 1.0;
+ball.verschiebe(schrittweite, 0, 0);</code></pre>
+          <p>In der ersten Zeile wird <code>schrittweite</code> deklariert. Die zweite initialisiert die Variable. Erst danach wird ihr Wert im Methodenaufruf verwendet.</p>
+        </details>
+        <details class="hint">
+          <summary>Beispiel · Welche Namen sind erlaubt und gut lesbar?</summary>
           <pre class="code-sample"><code>double schrittweite = 1.0;
-GLKugel ball = new GLKugel(0, 0, 0, 20);</code></pre>
-          <p><code>double</code> und <code>GLKugel</code> sind Typen; <code>schrittweite</code> und <code>ball</code> sind Variablennamen. <code>=</code> weist rechts stehenden Wert beziehungsweise das neu erzeugte Objekt links der Variablen zu. Namen sind innerhalb ihres Gültigkeitsbereichs eindeutig; derselbe Name kann in getrennten Methoden vorkommen.</p>
-        </article>
-        <article class="reference-card">
-          <h3>4 · Werttypen und Objekt-Typen</h3>
-          <p>Für dieses Projekt wichtig sind <code>int</code> für ganze Zahlen, <code>double</code> für Kommazahlen, <code>boolean</code> für <code>true</code> oder <code>false</code> und <code>char</code> für ein einzelnes Zeichen. Das Leerzeichen in <code>' '</code> ist ein solches Zeichen. <code>String</code> und GLOOP-Klassen wie <code>GLKugel</code> sind Objekttypen, keine primitiven Datentypen.</p>
-          <p>Lokale Variablen müssen einen Wert erhalten, bevor sie gelesen werden. Objektfelder bekommen zwar Java-Standardwerte, aber für Einsteiger ist eine klare, bewusste Initialisierung leichter zu verstehen.</p>
-        </article>
-      </div>
+GLKugel zielscheibe;
 
-      <div class="callout">
-        <h3>Operatoren, die im Ballwurfspiel wirklich helfen</h3>
-        <ul class="operator-list">
-          <li><code>=</code> weist einen Wert zu; <code>==</code> vergleicht zwei Werte auf Gleichheit.</li>
-          <li><code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code> vergleichen Zahlen.</li>
-          <li><code>!</code> bedeutet „nicht“, <code>&amp;&amp;</code> bedeutet „und“, <code>||</code> bedeutet „oder“.</li>
+int 2versuche = 3; // Ungültig: 2versuche beginnt mit einer Ziffer
+GLQuader class; // Ungültig: class ist ein reserviertes Java-Wort</code></pre>
+          <p>Ein Variablenname beginnt üblicherweise mit einem Buchstaben; Ziffern können danach vorkommen. Leerzeichen sind nicht erlaubt und reservierte Java-Schlüsselwörter wie <code>class</code> dürfen nicht als Namen verwendet werden. Java erlaubt weitere Startzeichen wie <code>_</code> oder <code>$</code>, die in Unterrichtsbeispielen aber besser vermieden werden. Variablennamen beginnen meist klein, Klassennamen meist groß.</p>
+        </details>
+      </article>
+
+      <article class="reference-card">
+        <h3>4 · Datentypen</h3>
+        <p>Java besitzt primitive Datentypen für einzelne Werte:</p>
+        <ul>
+          <li>Ganze Zahlen: <code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code>.</li>
+          <li>Kommazahlen: <code>float</code>, <code>double</code>.</li>
+          <li>Wahrheitswerte: <code>boolean</code> mit den Werten <code>true</code> oder <code>false</code>.</li>
+          <li>Einzelne Zeichen: <code>char</code>, zum Beispiel das Leerzeichen in <code>' '</code>.</li>
         </ul>
-        <p>Eine Bedingung muss am Ende <code>true</code> oder <code>false</code> ergeben. Zum Beispiel fragt <code>!tastatur.istGedrueckt(' ')</code>: „Ist die Leertaste gerade nicht gedrückt?“</p>
-      </div>
+        <p>Klassen sind selbst definierte oder bereitgestellte Referenztypen. <code>String</code> und GLOOP-Klassen wie <code>GLKugel</code> sind keine primitiven Datentypen. Werte unterschiedlicher Typen lassen sich nicht beliebig mischen; manchmal ist eine ausdrückliche Umwandlung nötig.</p>
+        <details class="hint">
+          <summary>Beispiel · Zeichen oder Text?</summary>
+          <pre class="code-sample"><code>char taste = ' ';
+String beschriftung = "Ball";</code></pre>
+          <p><code>char</code> steht in einfachen Anführungszeichen und enthält genau ein Zeichen. <code>String</code> steht in doppelten Anführungszeichen und kann eine Zeichenfolge enthalten.</p>
+        </details>
+      </article>
 
-      <div class="rule-grid">
-        <article class="reference-card">
-          <h3><code>if</code>: nur wenn die Bedingung stimmt</h3>
+      <article class="reference-card">
+        <h3>5 · Operatoren</h3>
+        <div class="table-wrap">
+          <table>
+            <caption>Operatoren und ihre Bedeutung</caption>
+            <thead><tr><th scope="col">Gruppe</th><th scope="col">Operatoren</th><th scope="col">Bedeutung</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Rechnen</th><td><code>+ - * / %</code></td><td>Addition (auch Textverknüpfung), Subtraktion, Multiplikation, Division und Rest einer Division.</td></tr>
+              <tr><th scope="row">Vergleichen</th><td><code>&lt; &lt;= &gt; &gt;= == !=</code></td><td>Kleiner, kleiner/gleich, größer, größer/gleich, gleich und ungleich. Das Ergebnis ist <code>true</code> oder <code>false</code>.</td></tr>
+              <tr><th scope="row">Logik</th><td><code>&amp;&amp; || ! ^</code></td><td>UND, ODER, NICHT und exklusives ODER bei Wahrheitswerten (genau einer ist wahr).</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="hint">
+          <summary>Beispiel · Zuweisen ist nicht Vergleichen</summary>
+          <pre class="code-sample"><code>int punkte = 3;              // Zuweisung: speichert 3
+boolean genug = punkte >= 3; // Vergleich: ergibt true
+boolean nichtGenug = !genug; // NICHT: kehrt true/false um</code></pre>
+          <p><code>=</code> speichert einen Wert. <code>==</code> fragt, ob zwei Werte gleich sind. Für Zahlen wird häufig <code>==</code> verglichen; für Text verwendet man in Java normalerweise <code>equals</code>.</p>
+        </details>
+        <details class="hint">
+          <summary>Beispiel · Division, Rest und logische Operatoren</summary>
+          <pre class="code-sample"><code>int quotient = 7 / 2;            // 3: Ganzzahldivision
+int rest = 7 % 2;                // 1: Rest
+boolean erreichbar = links || rechts;
+boolean nurEineTaste = links ^ rechts;</code></pre>
+          <p>Wenn beide Operanden von <code>/</code> ganze Zahlen sind, ist auch das Ergebnis ganzzahlig; der Nachkommateil entfällt. <code>%</code> liefert den Rest. Bei Wahrheitswerten bedeutet <code>||</code> „mindestens eine wahr“ und <code>^</code> „genau eine wahr“. Bei Ganzzahlen wird <code>^</code> außerdem als bitweises exklusives ODER verwendet.</p>
+        </details>
+      </article>
+
+      <article class="reference-card">
+        <h3>6 · Kontrollstrukturen: Reihenfolge, Wiederholung, Entscheidung</h3>
+        <p>Ohne Kontrollstruktur führt Java Befehle der Reihe nach aus. Schleifen wiederholen Anweisungen. Verzweigungen entscheiden anhand einer Bedingung, welche Anweisungen ausgeführt werden. Eine Bedingung muss einen Wahrheitswert (<code>boolean</code>) ergeben.</p>
+        <details class="hint">
+          <summary>Beispiel · Eine <code>while</code>-Schleife mit Zähler</summary>
+          <pre class="code-sample"><code>int zaehler = 0;
+while (zaehler &lt; 3) {
+    zaehler = zaehler + 1;
+}</code></pre>
+          <p>Vor jedem Durchlauf prüft Java <code>zaehler &lt; 3</code>. Der Wert steigt von 0 auf 1, 2 und 3. Bei 3 ist die Bedingung falsch und die Schleife endet. Eine Schleife braucht also eine erreichbare Endbedingung.</p>
+        </details>
+      </article>
+
+      <article class="reference-card">
+        <h3>7 · <code>if</code> und <code>if-else</code></h3>
+        <p>Ein <code>if</code>-Block wird ausgeführt, wenn seine Bedingung wahr ist. Bei <code>if-else</code> wird genau einer der beiden Blöcke gewählt. Zwei einzelne <code>if</code>-Anweisungen bleiben unabhängig: Beide Blöcke können ausgeführt werden, wenn beide Bedingungen wahr sind.</p>
+        <details class="hint">
+          <summary>Beispiel · Zwei Richtungen unabhängig prüfen</summary>
           <pre class="code-sample"><code>if (tastatur.links()) {
     ball.verschiebe(-1, 0, 0);
+}
+if (tastatur.rechts()) {
+    ball.verschiebe(1, 0, 0);
 }</code></pre>
-          <p>Der Block läuft nur, wenn die Bedingung <code>true</code> ist. Ohne <code>else</code> wird der folgende Code unabhängig davon weiter geprüft. Zwei einzelne <code>if</code>-Anweisungen sind also keine Entweder-oder-Auswahl.</p>
-        </article>
-        <article class="reference-card">
-          <h3><code>while</code>: wiederholen, solange wahr</h3>
-          <pre class="code-sample"><code>while (!tastatur.istGedrueckt(' ')) {
-    // wiederholt ausgeführter Spielschritt
+          <p>Java prüft beide Bedingungen. Das ist nicht dasselbe wie <code>if (...) { ... } else { ... }</code>, bei dem nur ein Zweig ausgewählt wird.</p>
+        </details>
+        <details class="hint">
+          <summary>Beispiel · Eine von zwei Möglichkeiten wählen</summary>
+          <pre class="code-sample"><code>if (treffer) {
+    tafel.setzeText("Treffer", 20);
+} else {
+    tafel.setzeText("Daneben", 20);
 }</code></pre>
-          <p>Java prüft die Bedingung vor jedem Durchlauf. Ist sie <code>false</code>, wird der Block beendet. Im Starter läuft die Schleife weiter, solange die Leertaste nicht gedrückt ist.</p>
-          <p class="notice"><strong>Schleifen-Check:</strong> Welche Eingabe oder Wertänderung kann die Bedingung irgendwann falsch machen? Ohne erreichbares Ende kann eine Schleife weiterlaufen.</p>
-        </article>
-      </div>
+          <p>Ist <code>treffer</code> wahr, erscheint „Treffer“; sonst wird der <code>else</code>-Block ausgeführt.</p>
+        </details>
+      </article>
 
-      <details class="hint">
-        <summary>Was ist mit Kommentaren?</summary>
-        <p><code>//</code> kommentiert bis zum Zeilenende. <code>/* ... */</code> umschließt einen Kommentarbereich. Kommentare erklären den Code für Menschen; Java führt sie nicht aus.</p>
-      </details>
+      <article class="reference-card">
+        <h3>8 · Kommentare</h3>
+        <p>Kommentare erklären den Code für Menschen. Java führt ihren Inhalt nicht aus. Einzeilige Kommentare beginnen mit <code>//</code>; Bereichskommentare stehen zwischen <code>/*</code> und <code>*/</code>.</p>
+        <details class="hint">
+          <summary>Beispiel · Kommentare im Programm</summary>
+          <pre class="code-sample"><code>// Ball nach links bewegen
+ball.verschiebe(-1, 0, 0);
+
+/* Dieser Kommentar
+   umfasst mehrere Zeilen. */</code></pre>
+        </details>
+      </article>
     </section>
 
     <section class="panel" id="gloop-klassen" aria-labelledby="gloop-title">
@@ -159,23 +247,11 @@ Sys.warte();</code></pre>
 
     <section class="panel" id="pdfs" aria-labelledby="pdf-title">
       <p class="eyebrow">Quellen zum Vertiefen</p>
-      <h2 id="pdf-title">Die bereitgestellten Original-PDFs</h2>
-      <p>Die PDFs bleiben unverändert, damit die Quellen erkennbar bleiben. Die Erklärungen oben ordnen die Inhalte des Ballwurfspiels ein und korrigieren missverständliche Kurzregeln.</p>
+      <h2 id="pdf-title">Die GLOOP-Übersicht als PDF</h2>
+      <p>Die verständliche Java-Syntaxübersicht steht vollständig auf dieser Seite. Als zusätzliches Nachschlagewerk findest du hier die bereitgestellte GLOOP-Referenz.</p>
       <ul class="pdf-list">
         <li><a href="material/Grundlagenuebersicht-GLOOP-3.7.pdf">Grundlagenübersicht GLOOP 3.7 öffnen (PDF)</a><span>Die verwendeten Klassen und ausgewählte Methoden nachschlagen. Nicht jede aufgeführte Klasse wird für das Ballwurfspiel gebraucht.</span></li>
-        <li><a href="material/Syntaxregeln-Java-V2-original.pdf">Java-Syntaxregeln – Original öffnen (PDF)</a><span>Das Original kennzeichnet sich selbst als unvollständig. Lies für präzise Regeln zuerst die korrigierte Erklärung auf dieser Seite.</span></li>
       </ul>
-      <div class="callout warning">
-        <h3>Korrekturhinweise zur Syntax-PDF</h3>
-        <ul>
-          <li>Nicht jede Codezeile endet mit <code>;</code>: Befehle meist schon, aber nicht die Kopfzeilen von <code>if</code>, <code>while</code>, Methoden oder Klassen.</li>
-          <li>Eine <code>if</code>-Anweisung führt ihren Block aus, wenn ihre Bedingung <code>true</code> ist.</li>
-          <li><code>String</code> ist kein primitiver Datentyp. GLOOP-Klassen wie <code>GLKugel</code> sind ebenfalls Referenztypen.</li>
-          <li>Variablennamen müssen in ihrem Gültigkeitsbereich eindeutig sein; Namen dürfen in voneinander getrennten Methoden wiederverwendet werden.</li>
-          <li><code>=</code> weist zu, <code>==</code> vergleicht. Das sind unterschiedliche Operatoren.</li>
-        </ul>
-        <p>Diese Präzisierungen ersetzen die missverständlichen Kurzformulierungen in der PDF, nicht die im Unterricht vereinbarten Regeln.</p>
-      </div>
     </section>
 
     <section class="panel quiz-panel" id="quiz" aria-labelledby="quiz-title">
