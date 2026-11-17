@@ -2,3 +2,6 @@
 /input
 /phyphox/
 /extras
+
+# Classroom source material must not be published with the GitHub Pages site.
+/new/

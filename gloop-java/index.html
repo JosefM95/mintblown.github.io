@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Selbstlerneinheit zum Java-Ballwurfspiel mit GLOOP: den Prototyp analysieren, eine Lösung planen und sie in BlueJ selbstständig entwickeln.">
+  <title>Java mit GLOOP · Vom Prototyp zum Ballwurfspiel</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="lesson.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html">✳ Java mit GLOOP</a>
+    <a href="../index.html">Alle Lernprojekte</a>
+  </header>
+  <main>
+    <header class="hero">
+      <p class="eyebrow">Informatik · Einführungsphase NRW · Java und GLOOP</p>
+      <h1>Vom Prototyp zum Ballwurfspiel</h1>
+      <p>Du bekommst den Ausgangscode in der Schule. Diese Selbstlerneinheit begleitet dich am Tablet, während du am PC in BlueJ untersuchst, planst, programmierst und testest.</p>
+      <div class="hero-points">
+        <span>Erst verstehen, dann verändern</span>
+        <span>Hilfen in mehreren Stufen</span>
+        <span>Zusatzwege für Neugierige</span>
+        <span>Referenzen bei Bedarf</span>
+      </div>
+    </header>
+
+    <section class="panel" aria-labelledby="outcomes-title">
+      <h2 id="outcomes-title">Woran du am Ende erkennst, dass du weitergekommen bist</h2>
+      <ul class="outcomes">
+        <li>Du kannst den vorhandenen Java-Code mit Begriffen aus der Objektorientierung beschreiben.</li>
+        <li>Du erklärst, wie Tastaturabfragen, Bedingungen und Wiederholungen zusammenwirken.</li>
+        <li>Du ergänzt die Szene um eine passende Zielscheibe und eine tragfähige Grundfläche.</li>
+        <li>Du planst die Spielphasen, bevor du sie programmierst.</li>
+        <li>Du prüfst dein Programm mit begründeten Testfällen und kannst Fehler systematisch eingrenzen.</li>
+      </ul>
+      <p class="notice"><strong>Wichtig:</strong> Hier steht absichtlich keine vollständige Musterlösung und keine Folge von Codezeilen zum Abschreiben. Die Aufgaben helfen dir, eigene Entscheidungen zu treffen. Programmiere parallel in BlueJ und sichere deinen Arbeitsstand nach den Vorgaben deiner Lehrkraft.</p>
+    </section>
+
+    <nav class="lesson-nav" aria-label="Lernbereiche">
+      <a href="#bluej">BlueJ startklar machen</a>
+      <a href="#observe">Code untersuchen</a>
+      <a href="#plan">Spiel planen</a>
+      <a href="#develop">In eigenen Schritten entwickeln</a>
+      <a href="#test">Testen und Fehlersuche</a>
+      <a href="#challenge">Weiterdenken</a>
+      <a href="referenzen/index.html">Java- und GLOOP-Referenzen ↗</a>
+    </nav>
+
+    <section class="panel reference-entry" aria-labelledby="reference-entry-title">
+      <h2 id="reference-entry-title">Du kommst bei einem Begriff nicht weiter?</h2>
+      <p>Du musst nicht alles auf einmal lernen. Öffne nur die kurze Erklärung, die du gerade brauchst, und kehre dann zu deiner Aufgabe zurück.</p>
+      <div class="reference-links">
+        <a href="referenzen/index.html#java">Java-Syntax nachschlagen <span>Semikolon, Klammern, Variablen und Bedingungen ↗</span></a>
+        <a href="referenzen/index.html#gloop-klassen">GLOOP im Startercode verstehen <span>Objekte, Koordinaten und Methoden aus deinem Programm ↗</span></a>
+        <a href="referenzen/index.html#quiz">Wissen kurz prüfen <span>Ein kleines Quiz mit Rückmeldung ↗</span></a>
+      </div>
+    </section>
+
+    <section class="panel" id="bluej" aria-labelledby="bluej-title">
+      <p class="eyebrow">Arbeitsplatz einrichten</p>
+      <h2 id="bluej-title">BlueJ: Projekt, Klasse und Methode</h2>
+      <p>Am PC läuft BlueJ; am Tablet bleibt diese Seite geöffnet. Die folgenden Screenshots stammen aus BlueJ. Bezeichnungen und Anordnung können sich je nach Version und Sprache unterscheiden.</p>
+
+      <div class="callout">
+        <h3>Bevor du eine Klasse neu anlegst</h3>
+        <p>Prüfe, was die Lehrkraft bereitgestellt hat. Enthält der BlueJ-Projektordner bereits die Klasse <code>Ballwurfspiel</code>, öffne das Projekt und verwende diese Klasse. Lege keine zweite gleichnamige Klasse an.</p>
+      </div>
+
+      <h3>Fall A · Ein BlueJ-Projekt liegt auf dem Netzlaufwerk</h3>
+      <ol class="compact-list">
+        <li>Wähle in BlueJ <strong>Projekt → Projekt öffnen …</strong> und öffne den bereitgestellten Projektordner.</li>
+        <li>Die Klassen erscheinen als Kacheln im Projektfenster. Doppelklicke auf <code>Ballwurfspiel</code>, um den Code zu lesen.</li>
+        <li>Übersetze das Projekt erst, wenn du den Ausgangscode geprüft hast.</li>
+      </ol>
+
+      <h3>Fall B · Du erhältst nur den Java-Quelltext</h3>
+      <ol class="compact-list">
+        <li>Erstelle in BlueJ über <strong>Projekt → Neues Projekt …</strong> zunächst einen Projektordner an dem Speicherort, den deine Lehrkraft vorgibt.</li>
+        <li>Wähle <strong>Neue Klasse …</strong>, lasse den Typ <strong>Klasse</strong> ausgewählt und trage als Namen genau <code>Ballwurfspiel</code> ein. Groß- und Kleinschreibung müssen übereinstimmen.</li>
+        <li>Öffne die neue Klasse. Ersetze den BlueJ-Platzhalter durch den vollständigen Quelltext vom Netzlaufwerk und speichere.</li>
+        <li>Wähle <strong>Übersetzen</strong> (in einer englischen Oberfläche <strong>Compile</strong>). Lies die erste Fehlermeldung vollständig, statt sie zu übergehen.</li>
+      </ol>
+      <div class="callout warning">
+        <h3>Wenn <code>GLOOP</code> als unbekannt markiert wird</h3>
+        <p>Der Code verwendet die schulische GLOOP-Bibliothek. Entferne den Import nicht auf Verdacht. Prüfe, ob du das vorbereitete BlueJ-Projekt und die schulische Umgebung verwendest; bitte bei Bedarf deine Lehrkraft um Hilfe bei der Bibliothekseinrichtung.</p>
+      </div>
+
+      <h3>Ein Spielobjekt erzeugen und <code>fuehreAus()</code> aufrufen</h3>
+      <p>In der Ausgangsfassung ist <code>fuehreAus()</code> eine nicht-statische Methode. Sie gehört zu einem konkreten Spielobjekt. Deshalb genügt es nicht, nur die Klassenkachel zu öffnen.</p>
+      <ol class="compact-list">
+        <li>Übersetze die Klasse erfolgreich.</li>
+        <li>Klicke mit der rechten Maustaste auf die Klassenkachel <code>Ballwurfspiel</code> und wähle den Konstruktor <code>new Ballwurfspiel()</code>.</li>
+      </ol>
+      <figure class="bluej-figure">
+        <img src="img/bluej-instantiate-ballwurfspiel.png" alt="BlueJ-Projektfenster mit geöffneter Klassenkachel Ballwurfspiel und Kontextmenü; der Konstruktor new Ballwurfspiel() ist markiert.">
+        <figcaption><strong>Objekt erzeugen:</strong> Wähle den Konstruktor im Kontextmenü der Klassenkachel.</figcaption>
+      </figure>
+      <ol class="compact-list" start="3">
+        <li>BlueJ legt ein Objekt auf der Objektbank ab. Klicke mit der rechten Maustaste auf dieses Objekt – nicht erneut auf die Klassenkachel.</li>
+        <li>Wähle im Objektmenü <code>void fuehreAus()</code> und bestätige den Dialog.</li>
+        <li>Wenn das Spiel auf Tasten zu warten scheint, klicke in das GLOOP-Fenster. Im bereitgestellten Prototyp beendet die Leertaste die Positionierungsschleife.</li>
+      </ol>
+      <figure class="bluej-figure">
+        <img src="img/bluej-fuehre-aus.png" alt="BlueJ-Objektbank mit der Instanz ballwurf1 : Ballwurfspiel und geöffnetem Kontextmenü; void fuehreAus() ist markiert.">
+        <figcaption><strong>Methode aufrufen:</strong> Wähle <code>void fuehreAus()</code> im Kontextmenü des Objekts auf der Objektbank.</figcaption>
+      </figure>
+
+      <details class="hint">
+        <summary>Eine zweite Startweise erkennen</summary>
+        <p>Einige Projektfassungen rufen <code>fuehreAus()</code> bereits im Konstruktor auf. In so einer Fassung startet das Spiel beim Erzeugen des Objekts. Verwende dann nicht zusätzlich denselben manuellen Aufruf – entscheide dich für genau einen Startweg.</p>
+      </details>
+    </section>
+
+    <section class="panel" id="observe" aria-labelledby="observe-title">
+      <p class="eyebrow">Zuerst beobachten</p>
+      <h2 id="observe-title">Was kann der Prototyp schon – und was noch nicht?</h2>
+      <p>Starte nicht mit blindem Ergänzen. Lies die bereitgestellte Klasse einmal von oben nach unten. Markiere für dich Deklarationen, Objekterzeugungen, Methodenaufrufe und Kontrollstrukturen. Die Fragen führen deine Analyse, verraten aber nicht, welche Codezeile du schreiben sollst.</p>
+      <pre class="code-sample"><code>while (!tastatur.istGedrueckt(' ')) {
+    if (tastatur.links()) {
+        ball.verschiebe(-1, 0, 0);
+    }
+    if (tastatur.rechts()) {
+        ball.verschiebe(1, 0, 0);
+    }
+    Sys.warte();
+}</code></pre>
+      <div class="question-grid">
+        <article class="question-card">
+          <h3>Objekte und Verantwortung</h3>
+          <p>Welche Objekte braucht die Szene bereits? Welche Aufgabe hat jedes davon? Was ist im Quelltext ein Typ, was ein Variablenname?</p>
+          <details class="hint">
+            <summary>Hilfe 1 · orientieren</summary>
+            <p>Suche zuerst nach den Deklarationen auf Klassenebene. Vergleiche anschließend, welche Variablen mit <code>new</code> einen konkreten Gegenstand erzeugen.</p>
+          </details>
+          <details class="hint">
+            <summary>Hilfe 2 · unterscheiden</summary>
+            <p>Der Typ sagt, welche Art Objekt die Variable aufnehmen kann. <code>new</code> erzeugt das Objekt. Die Variable merkt sich, welches Objekt gemeint ist. In <code>GLKugel ball;</code> wird zum Beispiel erst die Variable angelegt; erst <code>new GLKugel(...)</code> erzeugt die Kugel.</p>
+          </details>
+          <p class="reference-nudge">Noch unsicher bei <code>new</code> oder Objekten? <a href="referenzen/index.html#gloop-klassen">GLOOP im Startercode ansehen ↗</a></p>
+        </article>
+        <article class="question-card">
+          <h3>Wiederholung und Abbruch</h3>
+          <p>Was wird vor jedem Schleifendurchlauf geprüft? Was bewirkt das <code>!</code>? Welche Taste beendet genau diese Schleife?</p>
+          <details class="hint">
+            <summary>Hilfe 1 · in Alltagssprache</summary>
+            <p>Formuliere die Bedingung erst ohne Symbol: „Wiederhole, solange …“. Prüfe danach, was passiert, wenn die abgefragte Taste gerade gedrückt ist.</p>
+          </details>
+          <details class="hint">
+            <summary>Hilfe 2 · Programmfluss</summary>
+            <p>Eine <code>while</code>-Bedingung wird vor dem Körper und nach jeder Runde erneut geprüft. <code>!</code> bedeutet „nicht“; die Schleife läuft also, solange die Leertaste <em>nicht</em> gedrückt ist. Prüfe, welche Aktion im Schleifenkörper den nächsten Tastenzustand abwartet.</p>
+          </details>
+          <p class="reference-nudge">Bedingungen und Klammern nachschlagen: <a href="referenzen/index.html#java">Java-Syntax, in kleinen Schritten ↗</a></p>
+        </article>
+        <article class="question-card">
+          <h3>Bedingungen und Aktionen</h3>
+          <p>Sind die beiden <code>if</code>-Anweisungen miteinander verbunden? Was geschieht, wenn beide Tastaturabfragen beim Prüfen wahr sind?</p>
+          <details class="hint">
+            <summary>Hilfe 1 · Codeform ansehen</summary>
+            <p>Suche nach dem Wort <code>else</code>. Fehlt es, wird jede Bedingung separat geprüft. Ob die Bedingung stimmt, entscheidet jeweils ein wahrer oder falscher Wert.</p>
+          </details>
+          <details class="hint">
+            <summary>Hilfe 2 · einen Durchlauf simulieren</summary>
+            <p>Schreibe die Position zuerst auf, wende die linke Verschiebung an und danach – falls ihre Bedingung wahr ist – auch die rechte. Vergleiche Anfangs- und Endposition.</p>
+          </details>
+        </article>
+      </div>
+      <div class="self-check" data-correct="continue">
+        <fieldset>
+          <legend>Selbstcheck: Die Leertaste ist nicht gedrückt. Wie verhält sich die gezeigte Schleife?</legend>
+          <label><input type="radio" name="loop-check" value="stop"> Die Bedingung ist falsch; der Schleifenkörper wird übersprungen.</label>
+          <label><input type="radio" name="loop-check" value="continue"> Die Abfrage ist falsch, aber durch <code>!</code> wird die Schleifenbedingung wahr.</label>
+          <label><input type="radio" name="loop-check" value="launch"> Der Ball wird dadurch nach vorn geschossen.</label>
+        </fieldset>
+        <button type="button" class="secondary check-answer">Antwort prüfen</button>
+        <p class="status" role="status" aria-live="polite"></p>
+      </div>
+      <p class="small">Das Ausgangsprogramm verschiebt den Ball nach links oder rechts und wartet auf die Leertaste. Flug, Ziel und Trefferanzeige gehören erst zur Erweiterung.</p>
+    </section>
+
+    <section class="panel" id="plan" aria-labelledby="plan-title">
+      <p class="eyebrow">Erst planen</p>
+      <h2 id="plan-title">Vom Spielziel zu einer eigenen Struktur</h2>
+      <p>Schau dir die Planungsskizze an. Sie ist eine Hilfe, die Szene in Gegenstände zu zerlegen – keine Vorgabe für die Reihenfolge deiner Codezeilen.</p>
+      <figure class="planning-figure">
+        <img src="img/ballwurfspiel-skizze.png" alt="Planungsskizze des Ballwurfspiels: eine Kugel auf einem quadratischen Untergrund und eine Zielscheibe; alle drei Objekte sind beschriftet.">
+        <figcaption>Planungsimpuls aus dem bereitgestellten Material: Welche dargestellten Dinge brauchen ein Objekt im Programm? Im Startercode gibt es zunächst nur den Ball – Zielscheibe und Grundfläche ergänzt du selbst.</figcaption>
+      </figure>
+      <div class="phase-grid">
+        <article class="phase-card">
+          <h3>Szene ergänzen: Grundfläche und Zielscheibe</h3>
+          <p>Der Starter erzeugt bisher nur den Ball. Ergänze zwei passende GLOOP-Objekte: eine breite, flache Grundfläche unter dem Spielbereich und eine klar erkennbare Zielscheibe in Wurfrichtung.</p>
+          <details class="hint">
+            <summary>Hilfe 1 · passende Formen finden</summary>
+            <p>Überlege zuerst nur die Form: Für die Grundfläche passt ein sehr flacher, breiter Quader (<code>GLQuader</code>); für ein rundes Ziel eignet sich ein Zylinder (<code>GLZylinder</code>). Die GLOOP-Referenz zeigt die Konstruktoren.</p>
+          </details>
+          <details class="hint">
+            <summary>Hilfe 2 · Parameter sortieren</summary>
+            <p>Bei beiden Konstruktoren kommen zuerst drei Positionswerte. Beim Quader folgen drei Seitenlängen (X, Y, Z); beim Zylinder folgen Radius und Höhe. Welche Länge muss klein, welche müssen groß sein, damit die Fläche flach und weitläufig wirkt?</p>
+          </details>
+          <details class="hint">
+            <summary>Hilfe 3 · in der Szene prüfen</summary>
+            <p>Lege Ball, Grundfläche und Ziel in eine kleine Seitenansicht deiner Skizze ein. Achte darauf, dass der Ball über der Fläche startet und die Zielscheibe vor dem Ball sichtbar ist. Ändere zunächst nur die Position oder Größe eines Objekts auf einmal.</p>
+          </details>
+          <p class="reference-nudge">Konstruktoren und Parameterreihenfolge: <a href="referenzen/index.html#gloop-klassen">GLQuader und GLZylinder nachschlagen ↗</a></p>
+        </article>
+        <article class="phase-card">
+          <h3>Positionieren</h3>
+          <p>Welche Eingaben soll die Spielerin oder der Spieler machen können? Woran erkennst du, dass die Positionierung beendet ist?</p>
+          <details class="hint"><summary>Hilfe 1 · Tasten finden</summary><p>Suche nach den passenden Tastaturabfragen in der GLOOP-Referenz: Im Beispiel stehen <code>links()</code> und <code>rechts()</code>; für die Höhe gibt es auch <code>oben()</code> und <code>unten()</code>. Jede Richtung kann eine eigene <code>if</code>-Prüfung bekommen.</p></details>
+          <details class="hint"><summary>Hilfe 2 · wann wird gestoppt?</summary><p>Die Positionierung endet, wenn die Leertasten-Abfrage die Schleifenbedingung falsch macht. Lies die <code>while</code>-Bedingung als „wiederhole, solange …“ und beachte das <code>!</code>.</p></details>
+        </article>
+        <article class="phase-card">
+          <h3>Fliegen</h3>
+          <p>Was muss sich nach dem Start verändern? Welche Information aus dem Ballobjekt zeigt, ob die Zielhöhe bereits erreicht ist?</p>
+          <details class="hint"><summary>Hilfe 1 · die richtige Koordinate finden</summary><p>Vergleiche die Z-Koordinate vor und nach einem Schritt. Die GLOOP-Übersicht nennt dafür <code>gibZ()</code>; die Methoden <code>verschiebe(x, y, z)</code> ändern die Position in den drei Richtungen.</p></details>
+          <details class="hint"><summary>Hilfe 2 · Schleife sicher beenden</summary><p>Formuliere: „Wiederhole, solange der Ball …“. Prüfe dann, ob sich die im Test verwendete Koordinate in jedem Durchlauf ändert und dadurch irgendwann das Ende erreicht wird.</p></details>
+          <p class="reference-nudge">Die GLOOP-Referenz erklärt <a href="referenzen/index.html#gloop-klassen"><code>gibZ()</code> und <code>verschiebe(...)</code></a>; die <a href="referenzen/index.html#java">Java-Referenz erklärt <code>while</code></a>.</p>
+        </article>
+        <article class="phase-card">
+          <h3>Auswerten</h3>
+          <p>Welche Werte kannst du erst vergleichen, wenn Ball und Ziel auf derselben Tiefe sind? Wie lassen sich Treffer und Fehlwurf unterscheiden?</p>
+          <details class="hint"><summary>Hilfe 1 · passende Werte ablesen</summary><p>GLOOP-Objekte liefern ihre Mittelpunkt-Koordinaten mit <code>gibX()</code>, <code>gibY()</code> und <code>gibZ()</code>. Vergleiche Ball und Ziel erst, wenn beide dieselbe Tiefe erreicht haben.</p></details>
+          <details class="hint"><summary>Hilfe 2 · Treffer begründen</summary><p>Zeichne die Mittelpunkte in der X-Y-Ebene ein. Bestimme gedanklich den horizontalen und vertikalen Abstand und entscheide, wie groß der Abstand höchstens sein darf. Teste Mitte, Rand und knapp daneben.</p></details>
+          <p class="reference-nudge">Koordinaten und GLOOP-Methoden: <a href="referenzen/index.html#gloop-klassen">GLOOP-Klassen nachschlagen ↗</a></p>
+        </article>
+      </div>
+      <div class="design-prompt">
+        <h3>Dein Entwurfsblatt</h3>
+        <p>Notiere vor der Änderung für jede Phase: <strong>Startbedingung · veränderte Information · Endbedingung · sichtbare Rückmeldung</strong>. Nutze Papier oder das Heft, damit deine Planung unabhängig von diesem Browser verfügbar bleibt.</p>
+      </div>
+      <div class="self-check" data-correct="independent">
+        <fieldset>
+          <legend>Selbstcheck: Im Prototyp sind zwei einzelne <code>if</code>-Anweisungen hintereinander. Welche Aussage passt?</legend>
+          <label><input type="radio" name="if-check" value="exclusive"> Sobald die erste Bedingung wahr ist, wird die zweite nie mehr geprüft.</label>
+          <label><input type="radio" name="if-check" value="independent"> Beide Bedingungen werden unabhängig geprüft; beide Körper können ausgeführt werden.</label>
+          <label><input type="radio" name="if-check" value="else"> Die zweite Bedingung ist automatisch das <code>else</code> der ersten.</label>
+        </fieldset>
+        <button type="button" class="secondary check-answer">Antwort prüfen</button>
+        <p class="status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="panel" id="develop" aria-labelledby="develop-title">
+      <p class="eyebrow">In kleinen, eigenen Schritten</p>
+      <h2 id="develop-title">Arbeite wie eine Entwicklerin oder ein Entwickler</h2>
+      <p>Du bekommst keine fertige Reihenfolge für einzelne Codezeilen. Wähle eine überschaubare Verhaltensänderung, sage voraus, woran du Erfolg erkennst, und ändere erst dann den Code.</p>
+      <ol class="development-cycle">
+        <li><strong>Vorhersagen:</strong> Welche sichtbare Änderung erwartest du? Welche Bedingung muss dafür wahr sein?</li>
+        <li><strong>Begrenzen:</strong> Ändere nur so viel, dass eine neue Idee überprüfbar bleibt.</li>
+        <li><strong>Übersetzen:</strong> Behebe zuerst den obersten Compilerfehler; Folgefehler können davon abhängen.</li>
+        <li><strong>Beobachten:</strong> Teste die geänderte Idee mit dem BlueJ-Objekt und dem Spiel.</li>
+        <li><strong>Erklären:</strong> Kannst du begründen, warum die Bedingung irgendwann falsch wird?</li>
+      </ol>
+      <div class="support-grid">
+        <details class="hint">
+          <summary>Hilfe 1 · wenn du noch keinen Ansatz hast</summary>
+          <p>Markiere im bestehenden Code eine Stelle, die bereits eine ähnliche Aufgabe erfüllt. Frage dich, ob du ein vorhandenes Objekt oder einen vorhandenen Methodenaufruf nutzen kannst, bevor du neue Bausteine erfindest. Ein Aufruf wie <code>ball.verschiebe(...)</code> bedeutet: Die Methode <code>verschiebe</code> wird auf dem Objekt <code>ball</code> ausgeführt.</p>
+        </details>
+        <details class="hint">
+          <summary>Hilfe 2 · wenn eine Schleife nicht endet</summary>
+          <p>Schreibe die Schleifenbedingung zu Beginn und nach einem Durchlauf auf. Welcher Wert verändert sich? Kann die Bedingung dadurch überhaupt falsch werden? Kontrolliere auch, ob Klammern den ganzen Schleifenkörper umschließen und ob jeder einzelne Befehl mit <code>;</code> endet.</p>
+        </details>
+        <details class="hint">
+          <summary>Hilfe 3 · wenn die Trefferprüfung unklar ist</summary>
+          <p>Trenne die Geometrie von der Java-Syntax. Skizziere zwei Mittelpunkte, markiere die beiden Abstände in der Ebene und prüfe deinen Grenzfall zuerst mit festen Koordinaten.</p>
+        </details>
+      </div>
+      <div class="callout">
+        <h3>Debugging-Fragen statt Raten</h3>
+        <ul>
+          <li>Welche erste Meldung zeigt BlueJ beim Übersetzen – und auf welcher Zeile?</li>
+          <li>Wird die Methode auf einem Objekt oder auf der Klassenkachel aufgerufen?</li>
+          <li>Wird ein Ereignis nicht erkannt, weil das GLOOP-Fenster keinen Tastaturfokus hat?</li>
+          <li>Kannst du die Bedingung mit konkreten Werten von Hand auswerten?</li>
+        </ul>
+        <p>Bei einem Syntaxfehler hilft die <a href="referenzen/index.html#java">kurze Java-Checkliste</a>; bei unbekannten GLOOP-Begriffen hilft die <a href="referenzen/index.html#gloop-klassen">Übersicht zu den Klassen und Methoden</a>.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="test" aria-labelledby="test-title">
+      <p class="eyebrow">Nachweisen statt hoffen</p>
+      <h2 id="test-title">Baue dir eine Testmatrix</h2>
+      <p>Ein Spiel, das einmal „gut aussieht“, ist noch nicht ausreichend getestet. Formuliere Tests, bevor du deine Implementierung für fertig erklärst.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>Testideen zum Ballwurfspiel</caption>
+          <thead><tr><th scope="col">Situation</th><th scope="col">Vorhersage</th><th scope="col">Beobachtung</th><th scope="col">Nächster Schritt</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Keine Richtungstaste gedrückt</th><td>Was soll sich bewegen?</td><td>Was geschieht wirklich?</td><td>Welche Abfrage prüfst du?</td></tr>
+            <tr><th scope="row">Links oder rechts drücken</th><td>Welche Koordinate ändert sich?</td><td>Ist die Richtung korrekt?</td><td>Wie erklärst du das Vorzeichen?</td></tr>
+            <tr><th scope="row">Leertaste drücken</th><td>Welche Phase endet?</td><td>Beginnt die nächste Phase?</td><td>Welche Schleifenbedingung ist entscheidend?</td></tr>
+            <tr><th scope="row">Zielmitte, Rand und Fehlwurf</th><td>Welche Ausgabe erwartest du?</td><td>Was zeigt die Tafel?</td><td>Welcher Grenzfall ist noch offen?</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <details class="hint">
+        <summary>Fehlersuche bei zufälligen Zielen</summary>
+        <p>Wenn das Ziel bei jedem Start an einer anderen Stelle liegt, kannst du einen Fehler schwerer wiederholen. Prüfe deine Trefferlogik zunächst mit einer festen, gut erreichbaren Position. Nimm Zufall erst wieder hinzu, wenn die Grundfälle verlässlich funktionieren.</p>
+      </details>
+    </section>
+
+    <section class="panel" id="challenge" aria-labelledby="challenge-title">
+      <p class="eyebrow">Differenzierung · wähle eine Vertiefung</p>
+      <h2 id="challenge-title">Weiterdenken für schnelle Teams</h2>
+      <p>Wähle eine Erweiterung, die du begründen und testen kannst. Die Zusatzaufgaben verlangen eigene Entwürfe – sie liefern keinen vorgefertigten Programmtext.</p>
+      <div class="challenge-grid">
+        <article class="challenge-card">
+          <h3>Fairer Zufall</h3>
+          <p>Lege fest, in welchem Bereich das Ziel erscheinen darf. Prüfe, ob jede zufällige Zielposition mit der Steuerung erreichbar ist und ob Randlagen fair bleiben.</p>
+        </article>
+        <article class="challenge-card">
+          <h3>Präzise Treffergrenze</h3>
+          <p>Untersuche Mitte, Rand und knapp verfehlte Treffer. Wie hängen Zielgröße und Grenzwert zusammen? Entscheide, ob ein Treffer am Rand dazugehört.</p>
+        </article>
+        <article class="challenge-card">
+          <h3>Noch eine Runde</h3>
+          <p>Entwirf eine sinnvolle Spielrunde mit erneutem Wurf oder Punktestand. Welche Objekte müssen zurückgesetzt werden, bevor der nächste Versuch startet?</p>
+        </article>
+        <article class="challenge-card">
+          <h3>Code lesbarer machen</h3>
+          <p>Welche Teilaufgabe ließe sich in einer eigenen Methode erklären? Formuliere einen sprechenden Methodennamen und begründe, welche Information sie benötigt.</p>
+        </article>
+      </div>
+      <details class="hint">
+        <summary>Transferfrage zur Escape-Abfrage</summary>
+        <p>Auf dem Arbeitsblatt taucht auch <code>while (!tastatur.esc())</code> auf. Das ist eine Escape-Abfrage aus einem anderen Beispiel, nicht die Leertastenbedingung des Ballwurfspiel-Prototyps. Übersetze die Bedingung in Alltagssprache und vergleiche, wann diese Schleife endet.</p>
+      </details>
+    </section>
+
+    <section class="panel finish" aria-labelledby="finish-title">
+      <h2 id="finish-title">Dein Abschluss-Check</h2>
+      <ul class="checklist">
+        <li>Ich kann den Unterschied zwischen Klasse und Objekt an meinem Code erklären.</li>
+        <li>Ich kann für jede Schleife sagen, was sie wiederholt und wodurch sie endet.</li>
+        <li>Ich kann jede Verzweigung mit einem konkreten Testfall begründen.</li>
+        <li>Ich habe mindestens einen Treffer, einen Fehlwurf und einen Randfall geprüft.</li>
+        <li>Ich kann erklären, wie BlueJ ein Objekt erzeugt und seine Methode <code>fuehreAus()</code> aufruft.</li>
+      </ul>
+      <p>Wenn du einen Punkt noch nicht sicher abhaken kannst, kehre zur passenden Frage zurück. Halte deine Entwürfe und Testergebnisse auf Papier oder in deinem schulischen Arbeitsordner fest.</p>
+      <p class="small">Diese Seite speichert keine Eingaben und überträgt keine Schülerdaten.</p>
+    </section>
+  </main>
+  <noscript><p class="noscript-note">Der Lernpfad und die BlueJ-Hinweise bleiben lesbar. Für das Feedback der Selbstchecks muss JavaScript aktiviert sein.</p></noscript>
+  <footer>Java mit GLOOP · Selbstlerneinheit für die Einführungsphase</footer>
+</body>
+</html>
